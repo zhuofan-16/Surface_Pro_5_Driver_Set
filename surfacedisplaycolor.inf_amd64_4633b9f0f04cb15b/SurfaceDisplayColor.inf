@@ -1,0 +1,98 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; File:               SurfaceDisplayColor.inf
+;
+; Description:        Installation file for the Surface Color Service.  This INX
+;                     will install/update the SurfaceService, and also install
+;                     a NULL driver on the ACPI node.
+;
+; Copyright (C) Microsoft Corporation.  All Rights Reserved.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[Version]
+Signature="$Windows NT$"
+Class=System
+ClassGuid={4D36E97D-E325-11CE-BFC1-08002BE10318}
+Provider=%ManufacturerName%
+CatalogFile=SurfaceDisplayColor.cat
+DriverVer = 09/18/2018,3.104.139.0
+PnPLockDown=1
+
+[SourceDisksNames]
+1 = %DiskName%
+
+[SourceDisksFiles]
+SurfaceColorService.exe=1
+SurfaceColorTracker.exe=1
+Surface_DCI_Template.icm=1
+Surface_sRGB_Template.icm=1
+;Surface_sRGB_Accurate_Template.icm=1
+Surface_Vivid_Template.icm=1
+Surface_Enhanced_Template.icm=1
+color-profile-listener-task.xml=1
+
+
+[Manufacturer]
+%ManufacturerName%=Standard,NTamd64
+
+[Standard.NTamd64]
+%DeviceName%=SurfaceDisplayColor, ACPI\MSHW0036
+
+
+[SurfaceDisplayColor.NT]
+CopyFiles=ServiceCopy
+
+[SurfaceDisplayColor.NT.hw]
+
+[SurfaceDisplayColor.NT.Services]
+AddService=SurfaceColorService,0x00000800,SurfaceDisplayColorInstall; This installs SurfaceService (NT Service)
+AddService=,2
+
+[SurfaceDisplayColor.NT.CoInstallers]
+AddReg=CoInstallers_AddReg
+CopyFiles=ServiceCopy
+
+
+[SurfaceDisplayColorInstall]
+DisplayName   = %ServiceDisplayName%
+Description   = %ServiceDescription%
+ServiceType   = %SERVICE_WIN32_SHARE_PROCESS%
+StartType     = %SERVICE_AUTO_START%
+ErrorControl  = %SERVICE_ERROR_NORMAL%
+ServiceBinary = %11%\SurfaceColorService.exe
+
+
+[CoInstallers_AddReg]
+
+[DestinationDirs]
+ServiceCopy=11
+
+[ServiceCopy]
+SurfaceColorService.exe
+SurfaceColorTracker.exe
+Surface_DCI_Template.icm
+Surface_sRGB_Template.icm
+;Surface_sRGB_Accurate_Template.icm
+Surface_Enhanced_Template.icm
+Surface_Vivid_Template.icm
+color-profile-listener-task.xml
+
+[Strings]
+ManufacturerName="Surface"
+DiskName = "Surface Color Service Installation Disk"
+DeviceName="Surface Display Color"
+ServiceDisplayName="Surface Display Color Service"
+ServiceDescription="Provides support specific for Surface Hardware"
+
+; non-localizable
+SPSVCINST_ASSOCSERVICE= 0x00000002
+SERVICE_KERNEL_DRIVER = 1
+SERVICE_BOOT_START    = 0
+SERVICE_SYSTEM_START  = 1
+SERVICE_AUTO_START    = 2
+SERVICE_DEMAND_START  = 3
+SERVICE_ERROR_NORMAL  = 1
+SERVICE_ERROR_IGNORE  = 0
+SERVICE_WIN32_SHARE_PROCESS = 0x00000020
+
+;; eof: SurfaceDisplayColor.inx
+;;

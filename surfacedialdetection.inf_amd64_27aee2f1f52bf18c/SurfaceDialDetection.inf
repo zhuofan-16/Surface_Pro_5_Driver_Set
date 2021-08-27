@@ -1,0 +1,92 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; File:               SurfaceDialDetection.inf
+;
+; Description:        Driver installation file for SurfaceDialDetection.
+;
+; Copyright (C) Microsoft Corporation.  All Rights Reserved.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[Version]
+Signature="$Windows NT$"
+Class=System
+ClassGUID={4d36e97d-e325-11ce-bfc1-08002be10318}
+Provider=%ManufacturerName%
+CatalogFile=SurfaceDialDetection.cat
+DriverSet={7D15BA21-C604-49DA-BBD5-6552528C8F3D}
+DriverVer=03/06/2017,2.0.2.0
+PnPLockDown=1
+
+[Manufacturer]
+%ManufacturerName% = Standard, NTamd64
+
+[Standard.NTamd64]
+%DeviceName% = SurfaceDialDetection, {C8C28294-E6DA-41C1-AC7D-EEA174DC81D8}\SurfaceDialDetection
+
+[SourceDisksFiles]
+SurfaceDialDetection.dll = 1
+
+[SourceDisksNames]
+1 = %DiskName%
+
+[DestinationDirs]
+SurfaceDialDetection_Install.CopyFiles = 12, UMDF
+
+; =================== SurfaceDialDetection Device ==================================
+
+[SurfaceDialDetection.NT]
+CopyFiles = SurfaceDialDetection_Install.CopyFiles
+
+[SurfaceDialDetection.NT.hw]
+;Section required to prevent warnings
+
+[SurfaceDialDetection.NT.Services]
+AddService = WUDFRd, 0x000001fa, WUDFRd_Install.AddService
+
+[SurfaceDialDetection.NT.CoInstallers]
+AddReg = CoInstallers_AddReg
+CopyFiles = CoInstallers_CopyFiles
+
+[SurfaceDialDetection.NT.Wdf]
+UmdfService = SurfaceDialDetection, SurfaceDialDetection_Install
+UmdfServiceOrder = SurfaceDialDetection
+
+; =============== SurfaceDialDetection_Install section =================================
+
+[SurfaceDialDetection_Install]
+UmdfLibraryVersion = 2.0.0
+ServiceBinary = %12%\UMDF\SurfaceDialDetection.dll
+
+[SurfaceDialDetection_Install.CopyFiles]
+SurfaceDialDetection.dll
+
+; =============== WUDFRd_Install section =================================
+
+[WUDFRd_Install.AddService]
+DisplayName = %SurfaceDialDetection.SvcDesc%
+ServiceType = %SERVICE_KERNEL_DRIVER%
+StartType = %SERVICE_DEMAND_START%
+ErrorControl = %SERVICE_ERROR_NORMAL%
+ServiceBinary = %12%\WUDFRd.sys
+
+; =============== CoInstallers section =================================
+
+[CoInstallers_AddReg]
+HKR, , CoInstallers32, 0x00010000, WudfCoInstaller.dll
+
+[CoInstallers_CopyFiles]
+;Section required to prevent warnings
+
+; =================== Generic ==================================
+
+[Strings]
+ManufacturerName="Surface"
+DiskName = "SurfaceDialDetection Installation Disk"
+SurfaceDialDetection.SvcDesc = "Windows Driver Foundation - User-mode Driver Framework Reflector"
+DeviceName = "Surface Dial Detection"
+
+;
+; Non-Localizable Strings
+;
+SERVICE_KERNEL_DRIVER = 1
+SERVICE_DEMAND_START  = 3
+SERVICE_ERROR_NORMAL  = 1

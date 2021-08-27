@@ -1,0 +1,108 @@
+; File:               SurfaceKeyboardBacklight.inf
+;
+; Description:        Driver installation file for Backlight Driver.
+;
+; Copyright (C) 2014 Microsoft Corporation.  All Rights Reserved.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[Version]
+Signature="$Windows NT$"
+Class=System
+ClassGUID={4d36e97d-e325-11ce-bfc1-08002be10318}
+Provider=%ManufacturerName%
+CatalogFile=SurfaceKeyboardBacklight.cat
+DriverSet={817C5F76-CC01-4759-ABA5-57290F741FAE}
+DriverVer = 07/22/2019,6.19.139.0
+PnPLockDown=1
+
+[SourceDisksNames]
+1 = %DiskName%
+
+[SourceDisksFiles]
+SurfaceKeyboardBacklight.dll=1
+
+[Manufacturer]
+%ManufacturerName%=Standard,NTamd64
+
+[Standard.NTamd64]
+%DeviceName%=SurfaceKeyboardBacklight, {4E781CFC-87EE-459B-A319-9B0531EB7485}\SurfaceKeyboardBacklight
+%DeviceName%=SurfaceCoverAmbientBacklight, {4E781CFC-87EE-459B-A319-9B0531EB7485}\SurfaceKeyboardAmbientBacklight
+
+; =================== UMDF Device ==================================
+
+; ================== SurfaceKeyboardBacklight section =================
+
+[SurfaceKeyboardBacklight.NT]
+CopyFiles=SurfaceKeyboardBacklight_CopyFiles
+
+[SurfaceKeyboardBacklight.NT.HW]
+AddReg=NoAmbientBacklight_AddReg
+
+[SurfaceKeyboardBacklight.NT.Services]
+AddService=WUDFRd,0x000001fa,WUDFRD_ServiceInstall     ; This sets the device as a function
+
+
+[SurfaceKeyboardBacklight.NT.Wdf]
+UmdfService=SurfaceKeyboardBacklight,SurfaceKeyboardBacklight_Install
+UmdfServiceOrder=SurfaceKeyboardBacklight
+
+; ================== SurfaceCoverAmbientBacklight section ==========
+
+[SurfaceCoverAmbientBacklight.NT]
+CopyFiles=SurfaceKeyboardBacklight_CopyFiles
+
+[SurfaceCoverAmbientBacklight.NT.HW]
+AddReg=AmbientBacklight_AddReg
+
+[SurfaceCoverAmbientBacklight.NT.Services]
+AddService=WUDFRd,0x000001fa,WUDFRD_ServiceInstall     ; This sets the device as a function
+
+
+[SurfaceCoverAmbientBacklight.NT.Wdf]
+UmdfService=SurfaceKeyboardBacklight,SurfaceKeyboardBacklight_Install
+UmdfServiceOrder=SurfaceKeyboardBacklight
+
+; =============== General section =================================
+
+[SurfaceKeyboardBacklight_CopyFiles]
+SurfaceKeyboardBacklight.dll
+
+[SurfaceKeyboardBacklight_Install]
+UmdfLibraryVersion=2.15.0
+ServiceBinary=%12%\UMDF\SurfaceKeyboardBacklight.dll
+
+[WUDFRD_ServiceInstall]
+DisplayName = %WudfRdDisplayName%
+ServiceType  = %SERVICE_KERNEL_DRIVER%
+StartType    = %SERVICE_DEMAND_START%
+ErrorControl = %SERVICE_ERROR_NORMAL%
+ServiceBinary = %12%\WUDFRd.sys
+
+[NoAmbientBacklight_AddReg]
+HKR,,"AmbientBacklight",0x00010001,0x00000000
+
+[AmbientBacklight_AddReg]
+HKR,,"AmbientBacklight",0x00010001,0x00000001
+
+
+[DestinationDirs]
+DefaultDestDir = 12
+SurfaceKeyboardBacklight_CopyFiles = 12,UMDF ; copy to drivers\umdf
+
+; =================== Generic ==================================
+
+[Strings]
+ManufacturerName="Surface" 
+DiskName = "SurfaceKeyboardBacklight Installation Disk"
+WudfRdDisplayName="Windows Driver Foundation - User-mode Driver Framework Reflector"
+DeviceName="Surface Keyboard Backlight"
+
+; non-localizable
+SERVICE_KERNEL_DRIVER = 1
+SERVICE_BOOT_START    = 0
+SERVICE_SYSTEM_START  = 1
+SERVICE_AUTO_START    = 2
+SERVICE_DEMAND_START  = 3
+SERVICE_ERROR_NORMAL  = 1
+SERVICE_ERROR_IGNORE  = 0
+

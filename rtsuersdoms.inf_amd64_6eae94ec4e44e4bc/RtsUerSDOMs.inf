@@ -1,0 +1,107 @@
+; Installation inf for the Realtek USB Card Reader
+;
+; (c) Copyright 2006 Realtek
+;
+
+[Version]
+Signature="$CHICAGO$"
+Class=USB
+ClassGUID={36FC9E60-C465-11CF-8056-444553540000}
+Provider=%RTS%
+CatalogFile = RtsUer64.cat
+DriverVer=03/05/2019,10.0.17763.31246
+
+[SourceDisksFiles]
+RtsUer.sys = 99
+RsCRIcon.dll = 99
+
+[SourceDisksNames]
+99 = %DiskDesc%
+
+[DestinationDirs]
+CopyFilesSYS = 10,System32\Drivers
+CopyFilesDLL64 = 10,SysWOW64
+
+[Manufacturer]
+%VENDOR%=DeviceList,ntamd64
+
+[DeviceList.ntamd64]
+%USB\VID_0BDA&PID_53XX.DeviceDesc%=RSUER.USTOR, USB\VID_0BDA&PID_0307
+%USB\VID_0BDA&PID_53XX.DeviceDesc%=RSUER.USTOR, USB\VID_045E&PID_090C
+%USB\VID_0BDA&PID_53XX.DeviceDesc%=RSUER.USTOR, USB\VID_045E&PID_0306
+
+[CopyFilesSYS]
+RtsUer.sys
+
+[CopyFilesDLL64]
+RsCRIcon.dll
+
+[RSUER.UVSTOR.ntamd64]
+CopyFiles = CopyFilesSYS, CopyFilesDLL64
+
+[RSUER.UVSTOR.ntamd64.Services]
+AddService = RTSUER, 0x00000002, UVSTOR_Service_Inst
+
+[UVSTOR_Service_Inst]
+DisplayName    = %RtsUER%
+ServiceType    = %SERVICE_KERNEL_DRIVER%
+StartType      = %SERVICE_DEMAND_START%
+ErrorControl   = %SERVICE_ERROR_IGNORE%
+ServiceBinary  = %10%\system32\Drivers\RtsUer.sys
+AddReg         = UVSTOR.AddReg
+
+[UVSTOR.AddReg]
+HKR,"Parameters","dbg",0x10001,0xffbfdfff
+HKR,"UVSTOR","FirstLoad",0x10001,1
+HKR,"UVSTOR","NonRemovable",0x10001,1
+HKR,"UVSTOR","SupportXD",0x10001,0
+HKR,"UVSTOR","SupportMS",0x10001,0
+HKR,"UVSTOR","SupportMMC",0x10001,0
+
+[RSUER.USTOR.ntamd64]
+CopyFiles = CopyFilesSYS, CopyFilesDLL64
+
+[RSUER.USTOR.ntamd64.Services]
+AddService = RTSUER, 0x00000002, USTOR_Service_Inst
+
+[USTOR_Service_Inst]
+DisplayName    = %RtsUER%
+ServiceType    = %SERVICE_KERNEL_DRIVER%
+StartType      = %SERVICE_DEMAND_START%
+ErrorControl   = %SERVICE_ERROR_IGNORE%
+ServiceBinary  = %10%\system32\Drivers\RtsUer.sys
+AddReg         = USTOR.AddReg
+
+[USTOR.AddReg]
+HKR,"Parameters","dbg",0x10001,0xffbfdfff
+HKR,"USTOR","FirstLoad",0x10001,1
+HKR,"USTOR","NonRemovable",0x10001,1
+HKR,"USTOR","SupportXD",0x10001,0
+HKR,"USTOR","SupportMS",0x10001,0
+HKR,"USTOR","SupportMMC",0x10001,0
+
+[Strings]
+;Localizable Strings needed for HBA naming in Windows UI
+;*******************************************
+;Non-Localizable strings
+RTS      = "Realtek Semiconductor Corp."
+VENDOR   = "Realtek Semiconductor Corp."
+RtsUER   = "Realtek USB Card Reader - UER"
+DiskDesc = "Realtek USB Card Reader Source Disk"
+DriverVersion="10.0.17763.31246"
+USB\VID_0BDA&PID_0105.DeviceDesc="Realtek USB 2.0 Card Reader Download Mode"
+USB\VID_0BDA&PID_0125.DeviceDesc="Realtek USB 2.0 Card Reader Download Mode"
+USB\VID_0BDA&PID_XXXX.DeviceDesc="Realtek USB 2.0 Card Reader"
+USB\VID_0BDA&PID_53XX.DeviceDesc="Realtek USB 3.0 Card Reader"
+SERVICE_DEMAND_START   = 0x3
+SERVICE_KERNEL_DRIVER  = 0x1
+SERVICE_ERROR_IGNORE   = 0x0
+SERVICE_ERROR_NORMAL   = 0x1
+SERVICE_ERROR_SEVERE   = 0x2
+SERVICE_ERROR_CRITICAL = 0x3
+REG_EXPAND_SZ          = 0x00020000
+REG_DWORD              = 0x00010001
+REG_MULTI_SZ           = 0x00010000
+REG_BINARY             = 0x00000001
+REG_SZ                 = 0x00000000
+

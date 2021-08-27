@@ -1,0 +1,68 @@
+;
+; SurfaceAccessoryDevice.inf
+;
+; Surface Accessory Device Inf
+;
+; Copyright (c) Microsoft Corporation. All rights reserved.
+;
+
+[Version]
+Signature="$WINDOWS NT$"
+Class=System
+ClassGuid={4D36E97D-E325-11CE-BFC1-08002BE10318}
+Provider=%ManufacturerName%
+CatalogFile=SurfaceAccessoryDevice.cat
+DriverSet={A88792A2-B64C-43FD-9FA0-6CC0B3DF63D8}
+DriverVer=03/13/2017,1.1.511.0
+PnpLockdown=1
+
+[DestinationDirs]
+DefaultDestDir = 12
+
+[SourceDisksNames]
+1 = %DiskName%,,,""
+
+[SourceDisksFiles]
+SurfaceAccessoryDevice.sys  = 1,,
+
+;*****************************************
+; Install Section
+;*****************************************
+
+[Manufacturer]
+%ManufacturerName%=Standard,NTamd64
+
+[Standard.NTamd64]
+%SurfaceAccessoryDevice.DeviceDesc%=SurfaceAccessoryDevice_Device, ACPI\MSHW0006
+
+[SurfaceAccessoryDevice_Device.NT]
+CopyFiles=Drivers_Dir
+
+[Drivers_Dir]
+SurfaceAccessoryDevice.sys
+
+[SurfaceAccessoryDevice_Device.NT.HW]
+
+
+;-------------- Service installation
+[SurfaceAccessoryDevice_Device.NT.Services]
+AddService = SurfaceAccessoryDevice,%SPSVCINST_ASSOCSERVICE%, SurfaceAccessoryDevice_Service_Inst
+
+; -------------- SurfaceAccessoryDevice driver install sections
+[SurfaceAccessoryDevice_Service_Inst]
+DisplayName    = %SurfaceAccessoryDevice.SVCDESC%
+ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
+StartType      = 3               ; SERVICE_DEMAND_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %12%\SurfaceAccessoryDevice.sys
+
+;
+;--- SurfaceAccessoryDevice_Device Coinstaller installation ------
+;
+
+[Strings]
+SPSVCINST_ASSOCSERVICE= 0x00000002
+ManufacturerName="Surface"
+DiskName = "Surface Accessory Device Installation Disk"
+SurfaceAccessoryDevice.DeviceDesc = "Surface Accessory Device"
+SurfaceAccessoryDevice.SVCDESC = "Surface Accessory Device Service"

@@ -1,0 +1,64 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; File:               SurfaceAccessoryFwUpdate.inf
+;
+; Description:        Driver installation file for Surface Accessory firmware update.
+;
+; Copyright (C) 2015 Microsoft Corporation.  All Rights Reserved.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[Version]
+Signature="$Windows NT$"
+Class=System
+ClassGUID={4d36e97d-e325-11ce-bfc1-08002be10318}
+Provider=%ManufacturerName%
+CatalogFile=SurfaceAccessoryFwUpdate.cat
+DriverSet={E88876D8-488B-457D-9B70-CBF4D01DC1FD}
+DriverVer=03/04/2017,1.2.108.0
+PnPLockDown=1
+
+[SourceDisksNames]
+1 = %DiskName%
+
+[SourceDisksFiles]
+;Section required to prevent warnings
+
+[Manufacturer]
+%ManufacturerName%=Standard,NTamd64
+
+[Standard.NTamd64]
+%DeviceName%=SurfaceAccessoryFwUpdate, {5E9A8CDC-14AB-4609-A017-68BCE594AB68}\SurfaceAccessoryFwUpdate
+
+; =================== UMDF Device ==================================
+
+[SurfaceAccessoryFwUpdate.NT]
+CopyFiles=SurfaceAccessoryFwUpdate.CopyFiles
+
+[SurfaceAccessoryFwUpdate.NT.HW]
+;Section required to prevent warnings
+
+[SurfaceAccessoryFwUpdate.NT.Services]
+AddService=,2 ; no value for the service name
+
+[DestinationDirs]
+SurfaceAccessoryFwUpdate.CopyFiles=12,UMDF ; copy to drivers\umdf
+
+[SurfaceAccessoryFwUpdate.CopyFiles]
+;Section required to prevent warnings
+
+; =================== Generic ==================================
+
+[Strings]
+ManufacturerName="Surface"
+DiskName = "SurfaceAccessoryFwUpdate Installation Disk"
+WudfRdDisplayName="Windows Driver Foundation - User-mode Driver Framework Reflector"
+DeviceName="Surface Accessory Firmware Update"
+
+; non-localizable
+SERVICE_KERNEL_DRIVER = 1
+SERVICE_BOOT_START    = 0
+SERVICE_SYSTEM_START  = 1
+SERVICE_AUTO_START    = 2
+SERVICE_DEMAND_START  = 3
+SERVICE_ERROR_NORMAL  = 1
+SERVICE_ERROR_IGNORE  = 0
+

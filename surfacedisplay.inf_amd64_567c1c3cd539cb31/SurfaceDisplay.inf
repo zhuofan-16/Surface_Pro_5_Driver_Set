@@ -1,0 +1,73 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; File:         SurfaceDisplay.inf
+;
+; Description:  Driver Installation file
+;
+; Copyright (C) Microsoft Corporation.  All Rights Reserved.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[Version]
+Signature   = "$WINDOWS NT$"
+Class       = Monitor
+ClassGuid   = {4d36e96e-e325-11ce-bfc1-08002be10318}
+Provider    = %ManufacturerName%
+DriverVer=03/29/2017,1.0.7.0
+CatalogFile = SurfaceDisplay.cat
+PnpLockDown = 1
+
+[DestinationDirs]
+DefaultDestDir = 12
+
+[Manufacturer]
+%ManufacturerName%=SurfaceDisplay,NTamd64
+
+[SurfaceDisplay.NTamd64]
+%SurfaceDisplay.DeviceDesc%=SurfaceDisplay.Install, MONITOR\LGD0555
+
+[ControlFlags] 
+ExcludeFromSelect = *
+
+[SurfaceDisplay.Install]
+DelReg    = DCR
+AddReg    = SurfaceDisplay.AddReg, 2736, DPMS
+
+[DCR]
+HKR,MODES
+HKR,,MaxResolution
+HKR,,DPMS
+HKR,,ICMProfile
+
+[SurfaceDisplay.AddReg]
+HKR,"MODES\2736,1824"
+
+[2736]
+HKR,,MaxResolution,,"2736,1824"
+
+[DPMS]
+HKR,,DPMS,,1
+
+[SurfaceDisplay.Install.Services]
+AddService = monitor, %SPSVCINST_ASSOCSERVICE%, Monitor_Service.Install
+
+; Monitor class function driver loading parameters
+[Monitor_Service.Install]
+DisplayName    = %Monitor.SVCDESC%
+ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
+StartType      = 3               ; SERVICE_DEMAND_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %12%\monitor.sys
+
+[Strings]
+REG_DWORD                 = 0x00010001 
+ManufacturerName          = "Surface"
+DiskName                  = "Surface Display Installation Disk"
+SurfaceDisplay.DeviceDesc = "Surface Display"
+SERVICE_KERNEL_DRIVER     = 1
+SERVICE_BOOT_START        = 0
+SERVICE_SYSTEM_START      = 1
+SERVICE_AUTO_START        = 2
+SERVICE_DEMAND_START      = 3
+SERVICE_ERROR_NORMAL      = 1
+SERVICE_ERROR_IGNORE      = 0
+Monitor.SVCDESC           = "Microsoft Monitor Class Function Driver Service"
+SPSVCINST_ASSOCSERVICE    = 0x00000002
