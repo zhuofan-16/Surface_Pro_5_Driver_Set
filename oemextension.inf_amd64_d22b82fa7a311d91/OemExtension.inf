@@ -1,0 +1,88 @@
+;=============================================================================
+;
+; Copyright (c) Intel Corporation (2017-2019).
+;
+; INTEL MAKES NO WARRANTY OF ANY KIND REGARDING THE CODE.  THIS CODE IS
+; LICENSED ON AN "AS IS" BASIS AND INTEL WILL NOT PROVIDE ANY SUPPORT,
+; ASSISTANCE, INSTALLATION, TRAINING OR OTHER SERVICES.  INTEL DOES NOT
+; PROVIDE ANY UPDATES, ENHANCEMENTS OR EXTENSIONS.  INTEL SPECIFICALLY
+; DISCLAIMS ANY WARRANTY OF MERCHANTABILITY, NONINFRINGEMENT, FITNESS FOR ANY
+; PARTICULAR PURPOSE, OR ANY OTHER WARRANTY.  Intel disclaims all liability,
+; including liability for infringement of any proprietary rights, relating to
+; use of the code. No license, express or implied, by estoppel or otherwise,
+; to any intellectual property rights is granted herein.
+;
+;=============================================================================
+
+;======================================================================
+; Installation INF for:
+; Intel(R) Dynamic Application Loader Host Interface
+; Intel(R) Management and Security Application Local Management
+; 
+; OEM Extension Sample INF
+;======================================================================
+[Version]
+Signature="$WINDOWS NT$"
+Class = Extension
+ClassGuid = {e2f84ce7-8efa-411c-aa69-97454ca4cb57}
+Provider=%ManufacturerName%
+ExtensionId = {BABE2782-EB1B-46A7-871A-F043D3200542}
+CatalogFile=OemExtension.cat
+DriverVer = 12/25/2019,1952.14.0.1470
+
+[Manufacturer]
+%ManufacturerName%=Intel,NTx86.10.0, NTamd64.10.0
+
+
+[Intel.NTx86.10.0]
+%OEM.ExtensionDesc% = OEMExtInstallSection, PCI\VEN_8086&DEV_9CBA           ;ME10.x - BDW/WPT-LP
+%OEM.ExtensionDesc% = OEMExtInstallSection, PCI\VEN_8086&DEV_9D3A           ;ME11.x - SKL/SPT-LP, KBL/SPT-LP
+%OEM.ExtensionDesc% = OEMExtInstallSection, PCI\VEN_8086&DEV_A13A           ;ME11.0 - SKL/SPT-H
+%OEM.ExtensionDesc% = OEMExtInstallSection, PCI\VEN_8086&DEV_A2BA           ;ME11.6 - KBL/KBP-S
+%OEM.ExtensionDesc% = OEMExtInstallSection, PCI\VEN_8086&DEV_A1BA           ;ME11.x - Purley WS SKL/LBG - Production
+%OEM.ExtensionDesc% = OEMExtInstallSection, PCI\VEN_8086&DEV_A23A   	    ;ME11.x - Purley WS SKL/LBG - PreProduction
+%OEM.ExtensionDesc% = OEMExtInstallSection, PCI\VEN_8086&DEV_9DE0           ;ME12.0 - CNL/CNP-LP
+%OEM.ExtensionDesc% = OEMExtInstallSection, PCI\VEN_8086&DEV_A360           ;ME12.0 - CNL-H
+%OEM.ExtensionDesc% = OEMExtInstallSection, PCI\VEN_8086&DEV_3DE0           ;ME13.0 - ICL-H
+%OEM.ExtensionDesc% = OEMExtInstallSection, PCI\VEN_8086&DEV_34E0           ;ME13.0 - ICL-LP
+%OEM.ExtensionDesc% = OEMExtInstallSection, PCI\VEN_8086&DEV_38E0           ;ME13.0 - ICL-LP
+%OEM.ExtensionDesc% = OEMExtInstallSection, PCI\VEN_8086&DEV_18D3   	    ;ME13.0 - CDF
+%OEM.ExtensionDesc% = OEMExtInstallSection, PCI\VEN_8086&DEV_4DE0   	    ;ME13.50 - JSP
+
+%OEM.ExtensionDesc% = OEMExtInstallSection_no_lms, PCI\VEN_8086&DEV_98E0    ;LKF
+
+
+[Intel.NTamd64.10.0]
+%OEM.ExtensionDesc% = OEMExtInstallSection, PCI\VEN_8086&DEV_9CBA           ;ME10.x - BDW/WPT-LP
+%OEM.ExtensionDesc% = OEMExtInstallSection, PCI\VEN_8086&DEV_9D3A           ;ME11.x - SKL/SPT-LP, KBL/SPT-LP
+%OEM.ExtensionDesc% = OEMExtInstallSection, PCI\VEN_8086&DEV_A13A           ;ME11.0 - SKL/SPT-H
+%OEM.ExtensionDesc% = OEMExtInstallSection, PCI\VEN_8086&DEV_A2BA           ;ME11.6 - KBL/KBP-S
+%OEM.ExtensionDesc% = OEMExtInstallSection, PCI\VEN_8086&DEV_A1BA           ;ME11.x - Purley WS SKL/LBG - Production
+%OEM.ExtensionDesc% = OEMExtInstallSection, PCI\VEN_8086&DEV_A23A   	    ;ME11.x - Purley WS SKL/LBG - PreProduction
+%OEM.ExtensionDesc% = OEMExtInstallSection, PCI\VEN_8086&DEV_9DE0           ;ME12.0 - CNL/CNP-LP
+%OEM.ExtensionDesc% = OEMExtInstallSection, PCI\VEN_8086&DEV_A360           ;ME12.0 - CNL-H
+%OEM.ExtensionDesc% = OEMExtInstallSection, PCI\VEN_8086&DEV_3DE0           ;ME13.0 - ICL-H
+%OEM.ExtensionDesc% = OEMExtInstallSection, PCI\VEN_8086&DEV_34E0           ;ME13.0 - ICL-LP
+%OEM.ExtensionDesc% = OEMExtInstallSection, PCI\VEN_8086&DEV_38E0           ;ME13.0 - ICL-LP
+%OEM.ExtensionDesc% = OEMExtInstallSection, PCI\VEN_8086&DEV_18D3   	    ;ME13.0 - CDF
+%OEM.ExtensionDesc% = OEMExtInstallSection, PCI\VEN_8086&DEV_4DE0   	    ;ME13.50 - JSP
+%OEM.ExtensionDesc% = OEMExtInstallSection, PCI\VEN_8086&DEV_02E0   		;ME14.0 - CML
+%OEM.ExtensionDesc% = OEMExtInstallSection, PCI\VEN_8086&DEV_06E0   		;ME14.0 - CML
+%OEM.ExtensionDesc% = OEMExtInstallSection, PCI\VEN_8086&DEV_A3BA   		;ME14.x - CML-V
+
+%OEM.ExtensionDesc% = OEMExtInstallSection_no_lms, PCI\VEN_8086&DEV_98E0    ;LKF
+
+
+
+[OEMExtInstallSection.NT]
+
+[OEMExtInstallSection.NT.Components]
+
+[OEMExtInstallSection_no_lms.NT]
+
+[OEMExtInstallSection_no_lms.NT.Components]
+
+[Strings]
+ManufacturerName="Intel"
+OEM.ExtensionDesc = "Intel(R) ME Extension INF"
+

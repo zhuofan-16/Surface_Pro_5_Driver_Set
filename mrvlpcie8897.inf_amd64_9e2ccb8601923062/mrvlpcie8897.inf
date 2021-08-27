@@ -1,0 +1,744 @@
+;/*++
+;@file mrvlpcie8897.inx
+;
+;@brief  INF file for installing NXP PCIE Wireless LAN driver 
+;	  
+;	Copyright 2015-2020, NXP
+;
+;  	NXP CONFIDENTIAL
+;	The source code contained or described herein and all documents related to
+;	the source code (Materials) are owned by NXP, its
+;	suppliers and/or its licensors. Title to the Materials remains with NXP,
+;	its suppliers and/or its licensors. The Materials contain
+;	trade secrets and proprietary and confidential information of NXP, its
+;	suppliers and/or its licensors. The Materials are protected by worldwide copyright
+;	and trade secret laws and treaty provisions. No part of the Materials may be
+;	used, copied, reproduced, modified, published, uploaded, posted,
+;	transmitted, distributed, or disclosed in any way without NXP's prior
+;	express written permission.
+;
+;	No license under any patent, copyright, trade secret or other intellectual
+;	property right is granted to or conferred upon you by disclosure or delivery
+;	of the Materials, either expressly, by implication, inducement, estoppel or
+;	otherwise. Any license under such intellectual property rights must be
+;	express and approved by NXP in writing.
+;
+;--*/
+
+[Version]
+ Signature              = "$Windows NT$"
+ Compatible             = 1
+ Class                  = Net
+ ClassGUID              = {4d36e972-e325-11ce-bfc1-08002be10318}
+ Provider               = %NXP_VER_VENDOR_NAME_STR%
+ CatalogFile            = mrvlpcie8897.cat
+DriverVer = 05/07/2021,15.68.17021.121
+ ;PnpLockDown            = 1
+
+[ControlFlags]
+;Exclude all PNP adapters from user selection
+ ExcludeFromSelect      = *
+
+[Manufacturer]
+%NXP_VER_VENDOR_NAME_STR% = mrvlpcie_models, NTamd64.6.2 
+
+[mrvlpcie_models.NTamd64.6.2]
+ %NXP_PCI_DESC_STR% = mrvlpcie_Device.ndi, PCI\VEN_11AB&DEV_2B38
+ %NXP_PCI_DESC_STR% = mrvlpcie_Device.ndi, PCI\VEN_11AB&DEV_2B38&SUBSYS_11AB0000
+ %NXP_PCI_DESC_STR% = mrvlpcie_Device.ndi, PCI\VEN_11AB&DEV_2B38&SUBSYS_11AB0001
+ %NXP_PCI_DESC_STR% = mrvlpcie_Device.ndi, PCI\VEN_11AB&DEV_2B38&SUBSYS_11AB0002
+ %NXP_PCI_DESC_STR% = mrvlpcie_Device.ndi, PCI\VEN_11AB&DEV_2B38&SUBSYS_00000000
+ %NXP_PCI_DESC_STR% = mrvlpcie_Device.ndi, PCI\VEN_11AB&DEV_2B38&SUBSYS_045E0000
+ %NXP_PCI_DESC_STR% = mrvlpcie_Device.ndi, PCI\VEN_11AB&DEV_2B38&SUBSYS_045E0001
+ %NXP_PCI_DESC_STR% = mrvlpcie_Device.ndi, PCI\VEN_11AB&DEV_2B38&SUBSYS_045E0002
+ %NXP_PCI_DESC_STR% = mrvlpcie_Device.ndi, PCI\VEN_11AB&DEV_2B38&SUBSYS_045E0003
+ %NXP_PCI_DESC_STR% = mrvlpcie_Device.ndi, PCI\VEN_11AB&DEV_2B38&SUBSYS_045E0004
+ %NXP_PCI_DESC_STR% = mrvlpcie_Device.ndi, PCI\VEN_11AB&DEV_2B38&SUBSYS_045E0005
+ %NXP_PCI_DESC_STR% = mrvlpcie_Device.ndi, PCI\VEN_11AB&DEV_2B38&SUBSYS_04FF0000
+ %NXP_PCI_DESC_STR% = mrvlpcie_Device_2.ndi, PCI\VEN_11AB&DEV_2B38&SUBSYS_045E0006
+ %NXP_PCI_DESC_STR% = mrvlpcie_Device_2.ndi, PCI\VEN_11AB&DEV_2B38&SUBSYS_045E0007
+ %NXP_PCI_DESC_STR% = mrvlpcie_Device_2.ndi, PCI\VEN_11AB&DEV_2B38&SUBSYS_045E0008
+ %NXP_PCI_DESC_STR% = mrvlpcie_Device_2.ndi, PCI\VEN_11AB&DEV_2B38&SUBSYS_045E0009
+ %NXP_PCI_DESC_STR% = mrvlpcie_Device_3.ndi, PCI\VEN_11AB&DEV_2B38&SUBSYS_045E000A
+ %NXP_PCI_DESC_STR% = mrvlpcie_Device_2.ndi, PCI\VEN_11AB&DEV_2B38&SUBSYS_045E000B
+ %NXP_PCI_DESC_STR% = mrvlpcie_Device_2.ndi, PCI\VEN_11AB&DEV_2B38&SUBSYS_045E000C
+ %NXP_PCI_DESC_STR% = mrvlpcie_Device_2.ndi, PCI\VEN_11AB&DEV_2B38&SUBSYS_045E000D
+;********************************************************************************
+;					PCI88xx x64/x86 Install section for Windows 10
+;********************************************************************************
+
+[mrvlpcie_Device.ndi.NTamd64]
+ Include                = netvwifibus.inf
+ Needs                  = VWiFiBus.CopyFiles
+ AddReg                 = mrvlpcie.reg, mrvlpcie.pci.reg, mrvlpcie.common_ndis.reg, mv15x.params.reg, wlansvc.reg
+ CopyFiles              = mrvlpcie8897.copyfiles
+ BusType                = 5
+ ;Driver loading should be blocked after updating until reboot happens
+ Reboot
+ Characteristics        = 0x84  ; NCF_PHYSICAL, NCF_HAS_UI
+ *IfType                = 71    ; IF_TYPE_IEEE80211
+ *MediaType             = 16    ; NdisMediumNative802_11
+ *PhysicalMediaType     = 9     ; NdisPhysicalMediumNative802_11
+ FeatureScore           = 0xF0	; This is needed by system to score the driver
+ 
+[mrvlpcie_Device.ndi.NTamd64.Services]
+ Include                = netvwifibus.inf
+ Needs                  = VWiFiBus.Services
+ AddService             = %NXP_PCI_SERVICE_STR%, 2, mrvlpcie8897.Service_Inst, mrvlpcie.EventLog
+
+[mrvlpcie_Device.ndi.NTamd64.HW]
+ Include                = netvwifibus.inf
+ Needs                  = VWiFiBus.PnPFilterRegistration.Hw
+ AddReg                 = mrvlpcie.message_interrupt.reg 
+
+[mrvlpcie8897.Service_Inst]
+ DisplayName            = %NXP_PCI_SERVICE_STR%
+ ServiceType            = 1     ; SERVICE_KERNEL_DRIVER
+ StartType              = 3     ; SERVICE_DEMAND_START
+ ErrorControl           = 1     ; SERVICE_ERROR_NORMAL
+ ServiceBinary          = %12%\mrvlpcie8897.sys
+ LoadOrderGroup         = NDIS
+ AddReg                 = mv15x.services.reg, mv15x.services.defaultLTR.reg, mv15x.services.P2P_ChDef.reg
+ DelReg					= mv15x_del.services.reg
+; Dependencies           = WdiWiFi 
+ 
+[mrvlpcie_Device_2.ndi.NTamd64]
+ Include                = netvwifibus.inf
+ Needs                  = VWiFiBus.CopyFiles
+ AddReg                 = mrvlpcie.reg, mrvlpcie.pci.reg, mrvlpcie.common_ndis.reg, mv15x.params.reg, wlansvc.reg
+ CopyFiles              = mrvlpcie8897.copyfiles
+ BusType                = 5
+ ;Driver loading should be blocked after updating until reboot happens
+ Reboot
+ Characteristics        = 0x84  ; NCF_PHYSICAL, NCF_HAS_UI
+ *IfType                = 71    ; IF_TYPE_IEEE80211
+ *MediaType             = 16    ; NdisMediumNative802_11
+ *PhysicalMediaType     = 9     ; NdisPhysicalMediumNative802_11
+ FeatureScore           = 0xF0	; This is needed by system to score the driver
+ 
+[mrvlpcie_Device_2.ndi.NTamd64.Services]
+ Include                = netvwifibus.inf
+ Needs                  = VWiFiBus.Services
+ AddService             = %NXP_PCI_SERVICE_STR%, 2, mrvlpcie8897.Service_Inst_2, mrvlpcie.EventLog
+
+[mrvlpcie_Device_2.ndi.NTamd64.HW]
+ Include                = netvwifibus.inf
+ Needs                  = VWiFiBus.PnPFilterRegistration.Hw
+ AddReg                 = mrvlpcie.message_interrupt.reg
+
+[mrvlpcie8897.Service_Inst_2]
+ DisplayName            = %NXP_PCI_SERVICE_STR%
+ ServiceType            = 1     ; SERVICE_KERNEL_DRIVER
+ StartType              = 3     ; SERVICE_DEMAND_START
+ ErrorControl           = 1     ; SERVICE_ERROR_NORMAL
+ ServiceBinary          = %12%\mrvlpcie8897.sys
+ LoadOrderGroup         = NDIS
+ AddReg                 = mv15x.services.reg, mv15x.services.LTR.reg, mv15x.services.P2P_ChDef.reg
+ DelReg					= mv15x_del.services.reg
+; Dependencies           = WdiWiFi
+ 
+[mrvlpcie_Device_3.ndi.NTamd64]
+ Include                = netvwifibus.inf
+ Needs                  = VWiFiBus.CopyFiles
+ AddReg                 = mrvlpcie.reg, mrvlpcie.pci.reg, mrvlpcie.common_ndis.reg, mv15x.params.reg, wlansvc.reg, ihvExt.reg
+ CopyFiles              = mrvlpcie8897.copyfiles
+ BusType                = 5
+ ;Driver loading should be blocked after updating until reboot happens
+ Reboot
+ Characteristics        = 0x84  ; NCF_PHYSICAL, NCF_HAS_UI
+ *IfType                = 71    ; IF_TYPE_IEEE80211
+ *MediaType             = 16    ; NdisMediumNative802_11
+ *PhysicalMediaType     = 9     ; NdisPhysicalMediumNative802_11
+ FeatureScore           = 0xF0	; This is needed by system to score the driver
+ 
+[mrvlpcie_Device_3.ndi.NTamd64.Services]
+ Include                = netvwifibus.inf
+ Needs                  = VWiFiBus.Services
+ AddService             = %NXP_PCI_SERVICE_STR%, 2, mrvlpcie8897.Service_Inst_3, mrvlpcie.EventLog
+
+[mrvlpcie_Device_3.ndi.NTamd64.HW]
+ Include                = netvwifibus.inf
+ Needs                  = VWiFiBus.PnPFilterRegistration.Hw
+ AddReg                 = mrvlpcie.message_interrupt.reg
+
+[mrvlpcie8897.Service_Inst_3]
+ DisplayName            = %NXP_PCI_SERVICE_STR%
+ ServiceType            = 1     ; SERVICE_KERNEL_DRIVER
+ StartType              = 3     ; SERVICE_DEMAND_START
+ ErrorControl           = 1     ; SERVICE_ERROR_NORMAL
+ ServiceBinary          = %12%\mrvlpcie8897.sys
+ LoadOrderGroup         = NDIS
+ AddReg                 = mv15x.services.reg, mv15x.services.LTR.reg, mv15x.services.P2P_ChCustom.reg
+ DelReg					= mv15x_del.services.reg
+; Dependencies           = WdiWiFi
+
+;********************************************************************************
+;					Common Install section for Windows 8
+;********************************************************************************
+[mrvlpcie.reg]
+ ;HKR,NDI               ,DeviceID               ,0      ,"PCI\VEN_11AB&DEV_2B38&SUBSYS_11AB2B38&REV_10"
+ HKR,                   ,VendorDesc             ,0      ,%NXP_PCI_DESC_STR%
+ HKR,                   ,NetworkAddress         ,0      ,""          
+
+[mrvlpcie.pci.reg]
+ HKR,NDI                ,Service                ,0      ,%NXP_PCI_SERVICE_STR%
+ HKR,NDI                ,CardType               ,0      ,"pci"
+ HKR,                   ,BusType                ,0      ,"0"
+ 
+;*********************************************************************************************
+[mrvlpcie.EventLog]
+ AddReg                 = mrvlpcie.EventLog.reg
+
+[mrvlpcie.EventLog.reg]
+ HKR,                   ,EventMessageFile       ,0x00020000     ,"%%SystemRoot%%\System32\netevent.dll"
+ HKR,                   ,TypesSupported         ,0x00010001     ,7
+
+;*********************************************************************************************
+[mrvlpcie.common_ndis.reg]
+HKR,                    ,DevLoader              ,0      ,"*ndis"
+HKR,NDI                 ,Service                ,0      ,%NXP_PCI_SERVICE_STR%
+HKR,NDI\Interfaces      ,UpperRange             ,0      ,"ndis5"
+HKR,NDI\Interfaces      ,LowerRange             ,0      ,"ethernet,wlan,vwifi"
+HKR,NDIS                ,LogDriverName          ,0      ,%NXP_PCI_SERVICE_STR%
+
+;*********************************************************************************************
+[mrvlpcie.message_interrupt.reg]
+ HKR,Interrupt Management,,0x00000010
+ HKR,Interrupt Management\MessageSignaledInterruptProperties,,0x00000010
+ HKR,Interrupt Management\MessageSignaledInterruptProperties,MSISupported,0x00010001,1
+
+[mv15x.params.reg]
+;----------------------------------------------------------------------------
+; Packet Coalescing Options
+;----------------------------------------------------------------------------
+ HKR,NDI\Params\*PacketCoalescing,ParamDesc      ,0      ,"Packet Coalescing"
+ HKR,NDI\Params\*PacketCoalescing,Type           ,0      ,"enum"
+ HKR,NDI\Params\*PacketCoalescing,Default        ,0      ,"1"
+ HKR,NDI\Params\*PacketCoalescing\enum,"0"       ,0      ,"Disabled"
+ HKR,NDI\Params\*PacketCoalescing\enum,"1"       ,0      ,"Enabled"
+
+;----------------------------------------------------------------------------
+; Wake On Pattern
+;----------------------------------------------------------------------------
+ HKR,NDI\Params\*WakeOnPattern,ParamDesc         ,0      ,"Wake on pattern match"
+ HKR,NDI\Params\*WakeOnPattern,Type              ,0      ,enum
+ HKR,NDI\Params\*WakeOnPattern,Default           ,0      ,"1"
+ HKR,NDI\Params\*WakeOnPattern\enum,"0"          ,0      ,"Disabled"
+ HKR,NDI\Params\*WakeOnPattern\enum,"1"          ,0      ,"Enabled"
+ 
+;----------------------------------------------------------------------------
+; AUTO 5G 2.4G band ctrl
+;----------------------------------------------------------------------------
+ HKR,NDI\Params\BandCtrl,ParamDesc              ,0      ,"Band"
+ HKR,NDI\Params\BandCtrl,Type                   ,0      ,enum
+ HKR,NDI\Params\BandCtrl,Default                ,0      ,"3"
+ HKR,NDI\Params\BandCtrl\enum,"1"               ,0      ,"2.4 GHz Only"
+ HKR,NDI\Params\BandCtrl\enum,"2"               ,0      ,"5 GHz Only"
+ HKR,NDI\Params\BandCtrl\enum,"3"               ,0      ,"Auto"
+ 
+;----------------------------------------------------------------------------
+; WMM-PS
+; Default set to "Optimized"
+;----------------------------------------------------------------------------
+ HKR,NDI\Params\WMMPSCfg,ParamDesc              ,0      ,"WMM-PS"
+ HKR,NDI\Params\WMMPSCfg,Type                   ,0      ,enum
+ HKR,NDI\Params\WMMPSCfg,Default                ,0      ,"1"
+ HKR,NDI\Params\WMMPSCfg\enum,"1"               ,0      ,"Optimized"
+ HKR,NDI\Params\WMMPSCfg\enum,"2"               ,0      ,"High Performance"
+ 
+;----------------------------------------------------------------------------
+; Enable WoWLan
+;----------------------------------------------------------------------------
+ HKR,,EnableWOW                                  ,0x00010001      ,1
+ 
+;----------------------------------------------------------------------------
+; Turn On Full Passive Scan
+;----------------------------------------------------------------------------
+ HKR,, Roam_FullPassiveScan, 0x00010001, 0x1
+ 
+[mv15x.services.reg]
+ HKR,,Versions,0,""
+
+;----------------------------------------------------------------------------
+;Allow FW Dump
+;    0         No dump
+;    bit 0 = 1 FW dump
+;    bit 1 = 1 PCIe register dump
+;    bit 2 = 1 Driver dump
+;	 bit 3 = 1 Generate multiple bin files
+;----------------------------------------------------------------------------
+ HKR,,AllowFWDump,0x00010001,0x0
+
+;----------------------------------------------------------------------------
+;Rssi lower bound
+;    0xFF: Fw default value (-104)
+;----------------------------------------------------------------------------
+ HKR,,RssiLowerBound,0x00010001,0xFF
+
+;----------------------------------------------------------------------------
+;Rssi upper bound
+;    0xFF: Fw default value (-39)
+;----------------------------------------------------------------------------
+ HKR,,RssiUpperBound,0x00010001,0xFF
+
+;----------------------------------------------------------------------------
+;Default channel bandwidth
+;    0: 20 MHz
+;    2: 40 MHz
+;    0xFF: Fw default value (20 MHz for 2G, 40 MHz for 5G)
+;----------------------------------------------------------------------------
+HKR,,ChannelBandwidth,0x00010001, 0xFF
+
+;----------------------------------------------------------------------------
+;Default Guard Interval
+;    0: Long GI
+;    1: Short GI
+;    0xFF: Fw default value (Short GI)
+;----------------------------------------------------------------------------
+ HKR,,SGI,0x00010001, 0xFF
+
+;----------------------------------------------------------------------------
+;Default Green Field
+;    0: Disable
+;    1: Enable
+;    0xFF: Fw default value (Disable)
+;----------------------------------------------------------------------------
+ HKR,,GreenField,0x00010001, 0xFF
+
+;----------------------------------------------------------------------------
+;Forced P2P Go Operating Channel
+;    0xFF: No channel setting prescribed
+;    Valid 2.4G/5G Channel : Forced GO channel to be used (if applicable)
+;Note: this setting will have highest preference in P2P Operating channel selection
+;----------------------------------------------------------------------------
+ HKR,,ForceOperatingChannel,0x00010001, 0xFF
+
+;----------------------------------------------------------------------------
+;Default P2P Listen Channel
+;    0xFF: Fw default value (Channel 11)
+;----------------------------------------------------------------------------
+ HKR,,ListenChannel,0x00010001, 0xFF
+
+;----------------------------------------------------------------------------
+;Default HT stream
+;    0: 1X1
+;    1: 2X2
+;    0xFF: Fw default value (2X2 stream)
+;----------------------------------------------------------------------------
+ HKR,,Mimo,0x00010001, 0xFF
+
+;----------------------------------------------------------------------------
+;Default In Memory Log Mask
+;    0x01: Error
+;    0x02: Command
+;    0x04: Command Response
+;    0x08: Event
+;    0x10: Interrupt
+;    0x20: Data
+;    0x40: IO
+;    0x80: EAPOL Packet
+;----------------------------------------------------------------------------
+ HKR,,InMemLogMask,0x00010001,0x8F
+
+;----------------------------------------------------------------------------
+;Default NetwrokAddress
+;    FFFFFFFFFFFF: Device MAC address
+;----------------------------------------------------------------------------
+ HKR,,NetworkAddress,0,"FFFFFFFFFFFF"
+ 
+;----------------------------------------------------------------------------
+; AMPDU window size (DWORD,1 byte per setting)
+;     bit 31 - bit 24: uAP Tx
+;     bit 23 - bit 16: uAP Rx
+;     bit 15 - bit 8:  STA Tx
+;     bit 7  - bit 0:  STA Rx 
+;     0x20204040: uAP TX: 32, uAP RX: 32, STA TX: 64, STA RX: 64
+;----------------------------------------------------------------------------
+ HKR,,WindowSize,0x00010001, 0x20204040
+
+;----------------------------------------------------------------------------
+; ED Controls for EU region
+;----------------------------------------------------------------------------
+ HKR,,EDCtrl2.4Ghz,0x00010001, 1
+ HKR,,EDOffset2.4Ghz,0x00010001, 0
+ HKR,,EDOnPeriod2.4Ghz,0x00010001, 18
+ HKR,,EDOffPeriod2.4Ghz,0x00010001, 0
+ HKR,,EDBitmap2.4G,0x00010001, 0x101
+ HKR,,EDCtrl5Ghz,0x00010001, 1
+ HKR,,EDOffset5Ghz,0x00010001, 0
+ HKR,,EDOnPeriod5Ghz,0x00010001, 18
+ HKR,,EDOffPeriod5Ghz,0x00010001, 0
+ HKR,,EDBitmap5G,0x00010001, 0x101
+ 
+;----------------------------------------------------------------------------
+; Debug Mask for  Event Tracing or Debug prints 
+; Default flags =(0x28000037) (MMSG | MCMND| MEVENT | MFATAL | MERROR | MWARN | MMLAN)
+;----------------------------------------------------------------------------
+ HKR,,DebugMask,0x00010001, 0x28000037
+;----------------------------------------------------------------------------
+; IFR Debug Mask for  Event Tracing or Debug prints 
+; Default flags =(0x28000037) (MMSG | MCMND| MEVENT | MFATAL | MERROR | MWARN | MMLAN)
+;----------------------------------------------------------------------------
+ HKR,,IFRDebugMask,0x00010001, 0x28000037
+;----------------------------------------------------------------------------
+; Enable WPP tracing
+;     0: Disable
+;     1: Enable
+;----------------------------------------------------------------------------
+ HKR,,EnableTracing,0x00010001,0
+
+; Enable IFR
+;     0: Disable
+;     1: Enable
+;----------------------------------------------------------------------------
+ HKR,,IFREnable,0x00010001,1
+
+;----------------------------------------------------------------------------
+; Band Data Rate
+;     12: FW default (auto rate)
+;----------------------------------------------------------------------------
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,DataRate,ParamDesc              ,0      ,%BAND_DATARATE_STR%
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,DataRate,Type                   ,0      ,enum
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,DataRate,Default                ,0      ,"12"
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,DataRate\enum,"0"               ,0      ,%1_MBPS_STR%
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,DataRate\enum,"1"               ,0      ,%2_MBPS_STR%
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,DataRate\enum,"2"               ,0      ,%5_5_MBPS_STR%
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,DataRate\enum,"3"               ,0      ,%11_MBPS_STR%
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,DataRate\enum,"4"               ,0      ,%6_MBPS_STR%
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,DataRate\enum,"5"               ,0      ,%9_MBPS_STR%
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,DataRate\enum,"6"               ,0      ,%12_MBPS_STR%
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,DataRate\enum,"7"               ,0      ,%18_MBPS_STR%
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,DataRate\enum,"8"               ,0      ,%24_MBPS_STR%
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,DataRate\enum,"9"               ,0      ,%36_MBPS_STR%
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,DataRate\enum,"10"              ,0      ,%48_MBPS_STR%
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,DataRate\enum,"11"              ,0      ,%54_MBPS_STR%
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,DataRate\enum,"12"              ,0      ,%AUTO_STR%
+
+ HKR,,DataRate  ,0x00010001      ,12
+
+;----------------------------------------------------------------------------
+
+; 11n Data Rate
+;     -1: FW default (auto rate)
+;----------------------------------------------------------------------------
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,Dot11nDataRate,ParamDesc        ,0      ,%DOT11N_DATARATE_STR%
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,Dot11nDataRate,Type             ,0      ,enum
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,Dot11nDataRate,Default          ,0      ,"-1"
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,Dot11nDataRate\enum,"0"         ,0      ,%MCS0_STR%
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,Dot11nDataRate\enum,"1"         ,0      ,%MCS1_STR%
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,Dot11nDataRate\enum,"2"         ,0      ,%MCS2_STR%
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,Dot11nDataRate\enum,"3"         ,0      ,%MCS3_STR%
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,Dot11nDataRate\enum,"4"         ,0      ,%MCS4_STR%
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,Dot11nDataRate\enum,"5"         ,0      ,%MCS5_STR%
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,Dot11nDataRate\enum,"6"         ,0      ,%MCS6_STR%
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,Dot11nDataRate\enum,"7"         ,0      ,%MCS7_STR%
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,Dot11nDataRate\enum,"8"         ,0      ,%MCS8_STR%
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,Dot11nDataRate\enum,"9"         ,0      ,%MCS9_STR%
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,Dot11nDataRate\enum,"10"        ,0      ,%MCS10_STR%
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,Dot11nDataRate\enum,"11"        ,0      ,%MCS11_STR%
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,Dot11nDataRate\enum,"12"        ,0      ,%MCS12_STR%
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,Dot11nDataRate\enum,"13"        ,0      ,%MCS13_STR%
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,Dot11nDataRate\enum,"14"        ,0      ,%MCS14_STR%
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,Dot11nDataRate\enum,"15"        ,0      ,%MCS15_STR%
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,Dot11nDataRate\enum,"-1"        ,0      ,%AUTO_STR%
+
+ HKR,,Dot11nDataRate  ,0x00010001      ,-1
+
+;----------------------------------------------------------------------------
+; 11n BeamForming Cap Info (32bit Bitmap Value)
+;     0xFFFFFFFF: FW default (0)
+;----------------------------------------------------------------------------
+ HKR,,BeamFormingN,0x00010001,0xFFFFFFFF
+
+;----------------------------------------------------------------------------
+; 11ac BeamForming Setting (32bit Bitmap Value representing VHT Cap, from which only beamforming related bits are set)
+;     0xFFFFFFFF: FW default (0x33c071b0)
+;----------------------------------------------------------------------------
+ HKR,,BeamFormingAC,0x00010001,0xFFFFFFFF
+
+;----------------------------------------------------------------------------
+
+; 11ac Data Rate
+;     -1: Fw default (auto rate)
+
+;----------------------------------------------------------------------------
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,Dot11acDataRate,ParamDesc       ,0      ,%DOT11AC_DATARATE_STR%
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,Dot11acDataRate,Type               ,0      ,enum
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,Dot11acDataRate,Default            ,0      ,"-1"
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,Dot11acDataRate\enum,"0"         ,0      ,%MCS0_STR%
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,Dot11acDataRate\enum,"1"         ,0      ,%MCS1_STR%
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,Dot11acDataRate\enum,"2"         ,0      ,%MCS2_STR%
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,Dot11acDataRate\enum,"3"         ,0      ,%MCS3_STR%
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,Dot11acDataRate\enum,"4"         ,0      ,%MCS4_STR%
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,Dot11acDataRate\enum,"5"         ,0      ,%MCS5_STR%
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,Dot11acDataRate\enum,"6"         ,0      ,%MCS6_STR%
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,Dot11acDataRate\enum,"7"         ,0      ,%MCS7_STR%
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,Dot11acDataRate\enum,"8"         ,0      ,%MCS8_STR%
+
+; HKLM,System\CurrentControlSet\Services\mrvlpcie8897,Dot11acDataRate\enum,"9"         ,0      ,%MCS9_STR%
+
+ HKR,,Dot11acDataRate  ,0x00010001      ,-1
+
+;----------------------------------------------------------------------------
+;
+; 11ac Number of Spatial Stream
+;    1: spatial stream 1X1
+;    2: spatial stream 2X2	
+;----------------------------------------------------------------------------
+ HKR,,Dot11acNss,0x00010001, 2
+
+;----------------------------------------------------------------------------
+;
+; 11ac for P2P 
+;    1: Enable
+;    0: Disable	
+;    0xFFFFFFFF: Fw default (enable)
+;----------------------------------------------------------------------------
+ HKR,,Dot11acOnP2P,0x00010001, 0xFFFFFFFF
+ 
+;----------------------------------------------------------------------------
+; tx AMSDU support
+;    0: disable
+;    1: enable
+;----------------------------------------------------------------------------
+ HKR,,TxAMSDU,0x00010001, 0x1
+
+
+;----------------------------------------------------------------------------
+; HeartBeat support
+;    00000000xx:  Enable HearBeat in x.x second.
+;    0xFFFFFFFF:  Disable
+;----------------------------------------------------------------------------
+ HKR,,HBd2h,0x00010001, 0xFFFFFFFF
+
+
+;---------------------------------------------------------------------------
+;   GoMimoCfg support
+;    0:  Default, GO restart when MIMO 2x2->1x1
+;    1:  Option #1, GO MIMO 2x2<->1x1
+;    2:  Option #2, GO start in MIMO 1x1 for 2.4G
+;    0xFFFFFFFF: Fw default value(0)
+;----------------------------------------------------------------------------
+ HKR,,GoMimoCfg,0x00010001, 0x1
+
+;----------------------------------------------------------------------------
+;
+; Eanable MAC Randomization
+;    1: Enable
+;    0: Disable
+;    0xFFFFFFFF: FW default value (disable)
+;----------------------------------------------------------------------------
+HKR,,MACRandomization, 0x00010001, 0xFFFFFFFF
+
+;----------------------------------------------------------------------------
+;
+; Eanable Action Frame Support
+;    1: Enable
+;    0: Disable
+;    0xFFFFFFFF: FW default value (disable)
+;----------------------------------------------------------------------------
+HKR,,ActionFrameSupported, 0x00010001, 1
+
+;----------------------------------------------------------------------------
+; LEHangDetection support
+;    0: disable
+;    1: enable
+;----------------------------------------------------------------------------
+ HKR,,LEHangDetection,0x00010001, 0x1
+
+;----------------------------------------------------------------------------
+;  PS Control 
+;    bit0 – 1/0: disable/enable IEEE PS in NO_POWER_SAVE case
+;    bit1 – 1/0: disable/enable auto Deep Sleep in NO_POWER_SAVE case
+;    bit2 – 1/0: enable/disable IEEE PS in AUTO_POWER_SAVE case
+;    bit3 – 1/0: enable/disable auto Deep Sleep in AUTO_POWER_SAVE case
+;    0xF: FW default value 
+;            i.e. enable IEEE PS & auto Deep Sleep in AUTO_POWER_SAVE case, 
+;            disable IEEE PS & auto Deep Sleep in AUTO_POWER_SAVE case.
+;----------------------------------------------------------------------------
+HKR,,PSControl,0x00010001, 0xD
+
+;----------------------------------------------------------------------------
+;STA Ageout PS Timer (Time is configured as multiple of 100ms, i.e. 'Value' x 100  = time in ms)
+;    0xFFFFFFFF: Fw default value (100)
+;----------------------------------------------------------------------------
+ HKR,,AgeoutPSTimer,0x00010001, 0xFFFFFFFF
+
+;----------------------------------------------------------------------------
+;STA Ageout Maximum Power Timer (Time is configured as multiple of 100ms, i.e. 'Value' x 100  = time in ms)
+;    0xFFFFFFFF: Fw default value (100)
+;----------------------------------------------------------------------------
+ HKR,,AgeoutFullPwrTimer,0x00010001, 0xFFFFFFFF
+
+;----------------------------------------------------------------------------
+;Assoc delay (added as WAR for p2p 5.1.7 test case, MIN = 100mSec and MAX = 3000mSec)
+;    0xFFFFFFFF: FW default value (Disabled)
+;----------------------------------------------------------------------------
+ HKR,,AssocDelay,0x00010001, 0xFFFFFFFF
+
+;----------------------------------------------------------------------------
+;Enable WFA test mode
+;    0xFF: FW default value (Disabled)
+;----------------------------------------------------------------------------
+ HKR,,WfaTestMode,0x00010001, 0xFF
+
+;----------------------------------------------------------------------------
+;
+; Enable WFD Services
+;    1: Enable
+;    0: Disable
+;----------------------------------------------------------------------------
+HKR,,EnableWFDServices, 0x00010001, 0x1
+
+;----------------------------------------------------------------------------
+; MTU 
+;    0x000005DC:   ethernet default value: 1500 
+;    3480/0xD98:   max/auto
+;    0xFFFFFFFF:   FW default value (0x5DC)
+;----------------------------------------------------------------------------
+HKR,,MTU,0x00010001, 0xFFFFFFFF
+
+;----------------------------------------------------------------------------
+;
+; Eanable Fast Transition Support
+;    1: Enable
+;    0: Disable
+;    0xFFFFFFFF: Fw default value (Disable)
+;----------------------------------------------------------------------------
+HKR,,FastTransitionSupported, 0x00010001, 0x1
+
+;----------------------------------------------------------------------------
+;
+; Enable eCSA Support
+;    1: Enable
+;    0: Disable
+;	 0xFFFFFFFF: Fw default value (Disable)
+;----------------------------------------------------------------------------
+HKR,,eCSAsupport, 0x00010001, 0x1
+
+[mv15x.services.defaultLTR.reg]
+;----------------------------------------------------------------------------
+;  LTR value in active mode
+;    Value in us (1024ns), up to 1s
+;    0xFFFFFFFF: FW default value (Enable 160*1024ns)
+;----------------------------------------------------------------------------
+HKR,,ActiveLTR,0x00010001, 0xFFFFFFFF
+
+[mv15x.services.LTR.reg]
+;----------------------------------------------------------------------------
+;  LTR value in active mode
+;    Value in us (1024ns), up to 1s
+;    1000: Enable 1000*1024ns
+;----------------------------------------------------------------------------
+HKR,,ActiveLTR,0x00010001, 1000
+
+[mv15x.services.P2P_ChDef.reg]
+;----------------------------------------------------------------------------
+;Default P2P Go Operating Channel
+;    0xFF: Fw default value (11)
+;    Valid 2.4G/5G Channel : Default channel to be used for GO (if applicable)
+;Note: This setting will have last but second preference in self Operating channel selection
+;      i.e. higher preference than FW default.
+;----------------------------------------------------------------------------
+ HKR,,OperatingChannel,0x00010001, 0xFF
+
+[mv15x.services.P2P_ChCustom.reg]
+;----------------------------------------------------------------------------
+;Default P2P Go Operating Channel
+;    0x06: Use Channel 6 as default GO Channel (if applicable)
+;    0xFF: Fw default value (11)
+;    Any Valid 2.4G/5G Channel : Default channel to be used for GO (if applicable)
+;Note: This setting will have last but second preference in self Operating channel selection
+;      i.e. higher preference than FW default.
+;----------------------------------------------------------------------------
+ HKR,,OperatingChannel,0x00010001, 0x06
+
+[mv15x_del.services.reg]
+;----------------------------------------------------------------------------
+; To create dump files with different file name
+; Delete it once we install a new driver
+; This is to make sure that we start FileNumber with 0 on driver install
+;----------------------------------------------------------------------------
+HKR,,FileNumber
+
+[wlansvc.reg]
+;----------------------------------------------------------------------------
+; Turn On RnR
+;----------------------------------------------------------------------------
+ HKLM,System\CurrentControlSet\Services\Wlansvc\Parameters\OEM\SystemCapabilities,WLANPlatformLevelDeviceResetSupported,0x00010001, 0x1
+ 
+[ihvExt.reg]
+HKR,Ndi\IHVExtensions, ExtensibilityDLL, 0, %%SystemRoot%%\system32\MSWapiExt.dll
+HKR,Ndi\IHVExtensions, UIExtensibilityCLSID, 0, "{F9CFC98B-0731-4432-A25E-0F2F14AACB6E}"
+HKR,Ndi\IHVExtensions, AdapterOUI, 0x00010001,0x000000
+
+;*********************************************************************************************
+[DestinationDirs]
+ DefaultDestDir               = 12 ; %windir%\system32\drivers
+ 
+[SourceDisksNames]
+ 1 = %INSTALL_DISK_STR%
+
+[SourceDisksFiles]
+mrvlpcie8897.sys = 1
+[mrvlpcie8897.copyfiles]
+ mrvlpcie8897.sys
+ 
+
+;*********************************************************************************************
+[Strings]
+ NXP_VER_VENDOR_STR          = "Marvell"
+ NXP_VER_VENDOR_NAME_STR     = "Marvell Semiconductors, Inc."
+ NXP_PCI88XX_DESC_STR        = "Marvell AVASTAR Wireless-AC Network Controller"
+ NXP_PCI_DESC_STR            = "Marvell AVASTAR Wireless-AC Network Controller"
+ NXP_PCI_SERVICE_STR         = "mrvlpcie8897"
+ INSTALL_DISK_STR             = "Wireless LAN Class Driver Device Installation Disk"
+ 
