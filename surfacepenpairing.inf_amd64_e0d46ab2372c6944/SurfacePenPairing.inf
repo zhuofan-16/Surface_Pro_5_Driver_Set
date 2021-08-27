@@ -1,0 +1,81 @@
+; File:               SurfacePenPairing.inf
+;
+; Description:        Driver installation file.
+;
+; Copyright (C) 2014 Microsoft Corporation.  All Rights Reserved.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[Version]
+Signature="$Windows NT$"
+Class=System
+ClassGUID={4d36e97d-e325-11ce-bfc1-08002be10318}
+Provider=%ManufacturerName%
+CatalogFile=SurfacePenPairing.cat
+DriverVer = 07/26/2018,3.21.139.0
+DriverSet={633ED68F-7B59-4420-B732-131ED96C3001}
+PnPLockDown=1
+
+[SourceDisksNames]
+1 = %DiskName%
+
+[SourceDisksFiles]
+SurfacePenPairing.dll=1
+
+[Manufacturer]
+%ManufacturerName%=Standard,NTamd64
+
+[Standard.NTamd64]
+%DeviceName%=SurfacePenPairing, {6c8abe47-dac0-4b99-affa-4fff050e3cdc}\SurfaceDigitizerPenPairing
+
+; =================== UMDF Device ==================================
+
+[SurfacePenPairing.NT]
+CopyFiles=SurfacePenPairing.CopyFiles
+
+[SurfacePenPairing.NT.HW]
+;Section required to prevent warnings
+
+[SurfacePenPairing.NT.Services]
+AddService=WUDFRd,0x000001fa,WUDFRD_ServiceInstall     ; This sets the device as a function
+
+
+[SurfacePenPairing.NT.Wdf]
+UmdfService=SurfacePenPairing,SurfacePenPairing_Install
+UmdfServiceOrder=SurfacePenPairing
+
+[SurfacePenPairing_Install]
+UmdfLibraryVersion=2.15.0
+ServiceBinary=%12%\UMDF\SurfacePenPairing.dll
+
+[WUDFRD_ServiceInstall]
+DisplayName = %WudfRdDisplayName%
+ServiceType  = %SERVICE_KERNEL_DRIVER%
+StartType    = %SERVICE_DEMAND_START%
+ErrorControl = %SERVICE_ERROR_NORMAL%
+ServiceBinary = %12%\WUDFRd.sys
+
+
+[DestinationDirs]
+DefaultDestDir = 12
+SurfacePenPairing.CopyFiles = 12,UMDF ; copy to drivers\umdf
+
+[SurfacePenPairing.CopyFiles]
+SurfacePenPairing.dll
+
+; =================== Generic ==================================
+
+[Strings]
+ManufacturerName="Surface" 
+DiskName = "SurfacePenPairing Installation Disk"
+WudfRdDisplayName="Windows Driver Foundation - User-mode Driver Framework Reflector"
+DeviceName="Surface Pen Pairing"
+
+; non-localizable
+SERVICE_KERNEL_DRIVER = 1
+SERVICE_BOOT_START    = 0
+SERVICE_SYSTEM_START  = 1
+SERVICE_AUTO_START    = 2
+SERVICE_DEMAND_START  = 3
+SERVICE_ERROR_NORMAL  = 1
+SERVICE_ERROR_IGNORE  = 0
+

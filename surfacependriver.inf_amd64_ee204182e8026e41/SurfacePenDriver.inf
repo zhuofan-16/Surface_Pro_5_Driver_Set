@@ -1,0 +1,84 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; Copyright (c) Microsoft.  All Rights Reserved.
+;
+; File:          SurfacePenDriver.inx
+;
+; Description:   Driver Installation File.
+;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[Version]
+Signature="$WINDOWS NT$"
+Class=HIDClass
+ClassGUID={745a17a0-74d3-11d0-b6fe-00a0c90f57da}
+Provider=%ManufacturerName%
+CatalogFile=SurfacePenDriver.cat
+DriverVer=08/09/2018,23.608.139.0
+PnpLockdown=1
+
+[DestinationDirs]
+DefaultDestDir = 12
+
+; ================= Class section =====================
+
+[SourceDisksNames]
+1 = %DiskName%,,,""
+
+[SourceDisksFiles]
+SurfacePenDriver.sys  = 1,,
+
+;*****************************************
+; Install Section
+;*****************************************
+
+[Manufacturer]
+%ManufacturerName%=Standard,NTamd64
+
+[Standard.NTamd64]
+%SurfacePenDriver.DeviceDesc%=SurfacePenDriver_Device, HID\NTRG0001&Col05
+%SurfacePenDriver.DeviceDesc%=SurfacePenDriver_Device, HID\MSHW0037&Col05
+%SurfacePenDriver.DeviceDesc%=SurfacePenDriver_Device, HID\VEN_8086&DEV_9D3E&Col03
+%SurfacePenDriver.DeviceDesc%=SurfacePenDriver_Device, HID\VID_045e&PID_0911&MI_00&Col01
+%SurfacePenDriver.DeviceDesc%=SurfacePenDriver_Device, HID_DEVICE_UP:FF0B_U:000B
+
+[SurfacePenDriver_Device.NT]
+CopyFiles=Drivers_Dir
+
+[SurfacePenDriver_Device.NT.Services]
+AddService = SurfacePenDriver,%SPSVCINST_ASSOCSERVICE%,SurfacePenDriver_Service_Inst
+
+[SurfacePenDriver_Device.NT.Interfaces]
+AddInterface= {4D1E55B2-F16F-11CF-88CB-001111000030},,AddInterfaceSection 
+ 
+; ------------------- supporting sections -------------------
+
+[AddInterfaceSection] 
+AddProperty= AddInterfaceSection.AddProps 
+ 
+[AddInterfaceSection.AddProps] 
+; DEVPKEY_DeviceInterface_UnrestrictedAppCapabilities 
+{026e516e-b814-414b-83cd-856d6fef4822}, 8, 0x2012,, "Microsoft.SurfacePenSettings_8wekyb3d8bbwe"
+
+[Drivers_Dir]
+SurfacePenDriver.sys
+
+[SurfacePenDriver_Service_Inst]
+DisplayName    = %SurfacePenDriver.SVCDESC%
+ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
+StartType      = 3               ; SERVICE_DEMAND_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %12%\SurfacePenDriver.sys
+
+
+[SurfacePenDriver_Device.NT.Wdf]
+KmdfService =  SurfacePenDriver, SurfacePenDriver_Device_wdfsect
+
+[SurfacePenDriver_Device_wdfsect]
+KmdfLibraryVersion = 1.11
+
+[Strings]
+SPSVCINST_ASSOCSERVICE= 0x00000002
+ManufacturerName="Surface"
+DiskName = "SurfacePenDriver Installation Disk"
+SurfacePenDriver.DeviceDesc = "Surface Pen Settings"
+SurfacePenDriver.SVCDESC = "SurfacePenDriver Service"

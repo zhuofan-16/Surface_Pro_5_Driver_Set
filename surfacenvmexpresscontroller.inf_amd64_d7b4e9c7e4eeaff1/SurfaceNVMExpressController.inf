@@ -1,0 +1,80 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; 
+; File:             SurfaceNVMExpressController.inf
+;
+; Description:      Installation file to call stornvme.inf to install
+;                   the default inbox storage driver.
+;                   
+; Copyright (C) Microsoft Corporation.  All Rights Reserved.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[Version]
+Signature    = "$Windows NT$"
+Provider     = %ManufacturerName%
+ClassGUID    = {4D36E97B-E325-11CE-BFC1-08002BE10318}
+Class        = SCSIAdapter
+CatalogFile  = SurfaceNVMExpressController.cat
+DriverVer=03/29/2017,11.0.4.0
+PnpLockdown  = 1
+
+[DestinationDirs]
+DefaultDestDir = 12  ; %SystemRoot%\system32\drivers 
+
+[SourceDisksFiles]
+; Empty
+
+[SourceDisksNames]
+1 = %InstallationDiskName%,,,""
+
+
+;******************************************************************************
+; Install Section
+;******************************************************************************
+
+[Manufacturer]
+%ManufacturerName%=Standard,NTamd64
+
+[Standard.NTamd64]
+
+; ------------                           ;------------                ; ---------
+; Display Name                           ; INF Section                ; Device ID          
+; ------------                           ;------------                ; ---------
+
+%SurfaceNVMExpressController.DeviceDesc%=SurfaceNVMExpressController, PCI\VEN_144D&DEV_A804&SUBSYS_A801144D ; 1TB
+%SurfaceNVMExpressController.DeviceDesc%=SurfaceNVMExpressController, PCI\VEN_144D&DEV_A802&SUBSYS_A801144D ; 128, 256, 512 GB
+%SurfaceNVMExpressController.DeviceDesc%=SurfaceNVMExpressController, PCI\VEN_1179&DEV_0113&SUBSYS_00011179 ; 128, 256 GB
+%SurfaceNVMExpressController.DeviceDesc%=SurfaceNVMExpressController, PCI\VEN_144D&DEV_A806&SUBSYS_A801144D ; 128, 256, 512 GB
+%SurfaceNVMExpressController.DeviceDesc%=SurfaceNVMExpressController, PCI\VEN_8086&DEV_F1A5&SUBSYS_390A8086 ; 128, 256 GB
+
+;******************************************************************************
+; Device installation.  Use the Microsoft stornvme.sys, an inbox driver.
+;******************************************************************************
+[SurfaceNVMExpressController.NT]
+CopyFiles=CopyFilesList
+DelFiles=RemoveFilesList
+Include=stornvme.inf
+Needs=Stornvme_Inst
+
+[CopyFilesList]
+; Empty list, but must be present if you want to delete files.
+
+[RemoveFilesList]
+; Empty list, but must be present if you want to delete files.
+
+[SurfaceNVMExpressController.NT.HW]
+Include=stornvme.inf
+Needs=Stornvme_Inst.HW
+
+
+;******************************************************************************
+; Install the service.
+;******************************************************************************
+[SurfaceNVMExpressController.NT.Services]
+Include=stornvme.inf
+Needs=Stornvme_Inst.Services
+
+
+[Strings]
+ManufacturerName                       = "Surface"
+SurfaceNVMExpressController.DeviceDesc = "Surface NVM Express Controller"
+InstallationDiskName                   = "Surface NVM Express Controller installation disk"

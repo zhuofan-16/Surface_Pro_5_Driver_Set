@@ -1,0 +1,96 @@
+;
+; SurfacePro1786DigitizerIntegration.inf
+;
+; Copyright (c) Microsoft Corporation. All rights reserved
+;
+
+[Version]
+Signature="$Windows NT$"
+ClassGuid={745a17a0-74d3-11d0-b6fe-00a0c90f57da}
+Class=HIDClass
+Provider=%ManufacturerName%
+CatalogFile=SurfacePro1786DigitizerIntegration.cat
+DriverSet={83E4DBC8-ECA1-4DF9-B1DA-F283C7946A91}
+PnPLockDown=1
+
+DriverVer=03/22/2017,1.0.2.0
+
+[DestinationDirs]
+DefaultDestDir   = 12
+;
+; Driver information
+;
+;************************************************************
+; Install Section
+;************************************************************
+
+[Manufacturer]
+%ManufacturerName%=Standard,NTamd64
+
+[Standard.NTamd64]
+%SurfacePro1786DigitizerIntegration.DeviceDesc% = SurfacePro1786DigitizerIntegration, HID\VEN_8086&DEV_9D3E&Col09
+
+
+;************************************************************
+; General installation section
+;************************************************************
+[SurfacePro1786DigitizerIntegration.NT]
+CopyFiles=SurfacePro1786DigitizerIntegration.CopyFiles
+
+
+;************************************************************
+; File sections
+;************************************************************
+[SurfacePro1786DigitizerIntegration.CopyFiles]
+SurfacePro1786DigitizerIntegration.sys
+
+;************************************************************
+; Service Installation
+;************************************************************
+[SurfacePro1786DigitizerIntegration.NT.Services]
+AddService = SurfacePro1786DigitizerIntegration, 0x000001f8, SurfacePro1786DigitizerIntegration_Service_Inst
+AddService = ,%SPSVCINST_ASSOCSERVICE% ; null service install
+
+[SurfacePro1786DigitizerIntegration.NT.HW]
+; Add as device upper filter
+AddReg = SurfacePro1786DigitizerIntegration.HW.AddReg
+
+[SurfacePro1786DigitizerIntegration_Service_Inst]
+DisplayName    = %SurfacePro1786DigitizerIntegration.SvcDesc%
+ServiceType    = 1                  ; SERVICE_KERNEL_DRIVER
+StartType      = 3                  ; SERVICE_DEMAND_START
+ErrorControl   = 0                  ; SERVICE_ERROR_IGNORE
+ServiceBinary  = %12%\SurfacePro1786DigitizerIntegration.sys
+
+[SurfacePro1786DigitizerIntegration.HW.AddReg]
+HKR,,"UpperFilters",0x00010008,"SurfacePro1786DigitizerIntegration"
+
+
+;************************************************************
+; Source file information
+;************************************************************
+
+[SourceDisksNames]
+1 = %DiskId1%,,,
+
+[SourceDisksFiles]
+SurfacePro1786DigitizerIntegration.sys = 1,,
+
+;************************************************************
+; Strings
+;************************************************************
+
+[Strings]
+;
+; Non-Localizable Strings
+;
+SERVICEROOT    = "System\CurrentControlSet\Services"
+SPSVCINST_ASSOCSERVICE= 0x00000002
+
+;
+; Localizable Strings
+;
+DiskId1="SurfacePro1786DigitizerIntegration Installation Disk"
+SurfacePro1786DigitizerIntegration.DeviceDesc = "Surface Pro Digitizer Integration"
+SurfacePro1786DigitizerIntegration.SvcDesc = "Surface Pro Digitizer Integration Service"
+ManufacturerName="Surface"

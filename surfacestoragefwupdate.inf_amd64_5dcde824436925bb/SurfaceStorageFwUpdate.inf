@@ -1,0 +1,69 @@
+;;------------------------------------------------------------------------------
+;; File:          SurfaceStorageFwUpdate.inf
+;;
+;; Description:   Driver Installation file for Surface Storage Firmware Update
+;;                Updates SSD firmware for SamSung versions ?xxxxxx?, ???
+;;                and Toshiba version ???  
+;;
+;; Copyright (C) 2015 Microsoft Corporation.  All Rights Reserved.
+;;------------------------------------------------------------------------------
+;;
+
+[Version]
+Signature="$WINDOWS NT$"
+Class=System
+ClassGuid={4D36E97D-E325-11CE-BFC1-08002BE10318}
+Provider=%ManufacturerName%
+CatalogFile=SurfaceStorageFwUpdate.cat
+DriverVer = 04/30/2019,5.2.139.0
+PnpLockdown=1 
+
+[DestinationDirs]
+DefaultDestDir = 12
+
+[SourceDisksNames]
+1 = %DiskName%,,,""
+
+[SourceDisksFiles]
+SurfaceStorageFwUpdate.sys  = 1,,
+
+[Manufacturer]
+%ManufacturerName%=Standard,NTamd64
+
+[Standard.NTamd64]
+%SurfaceStorageFwUpdate.DeviceDesc%=SurfaceStorageFwUpdate_Device, ACPI\MSHW0048
+
+[SurfaceStorageFwUpdate_Device.NT]
+CopyFiles=Drivers_Dir
+
+[Drivers_Dir]
+SurfaceStorageFwUpdate.sys
+
+[SurfaceStorageFwUpdate_Device.NT.HW]
+
+[SurfaceStorageFwUpdate_Device.NT.Services]
+AddService = SurfaceStorageFwUpdate,%SPSVCINST_ASSOCSERVICE%, SurfaceStorageFwUpdate_Service_Inst, SurfaceStorageFwUpdate_EventLogInst
+
+[SurfaceStorageFwUpdate_Service_Inst]
+DisplayName    = %SurfaceStorageFwUpdate.SVCDESC%
+ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
+StartType      = 3               ; SERVICE_DEMAND_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %12%\SurfaceStorageFwUpdate.sys
+
+[SurfaceStorageFwUpdate_EventLogInst]
+AddReg     = SurfaceStorageFwUpdate_EventLogAddReg
+
+[SurfaceStorageFwUpdate_EventLogAddReg]
+HKR,,EventMessageFile,0x00020002,"%%SystemRoot%%\System32\IoLogMsg.dll;%%SystemRoot%%\System32\drivers\SurfaceStorageFwUpdate.sys"
+HKR,,TypesSupported,0x00010003,7
+
+[Strings]
+SPSVCINST_ASSOCSERVICE              = 0x00000002
+ManufacturerName                    = "Surface"
+DiskName                            = "Surface Storage Firmware Installation Disk"
+SurfaceStorageFwUpdate.DeviceDesc   = "Surface Storage Firmware Update"
+SurfaceStorageFwUpdate.SVCDESC      = "Surface Storage Firmware Update Service"
+
+;; eof: SurfaceStorageFwUpdate.inx
+;;

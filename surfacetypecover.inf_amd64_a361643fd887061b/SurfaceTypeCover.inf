@@ -1,0 +1,197 @@
+;
+; SurfaceTypeCover.inf
+;
+; Copyright (c) Microsoft Corporation. All rights reserved
+;
+
+[Version]
+Signature="$Windows NT$"
+ClassGUID={4D36E96B-E325-11CE-BFC1-08002BE10318}
+Class=Keyboard
+Provider=%ManufacturerName%
+CatalogFile=SurfaceTypeCover.cat
+PnPLockDown=1
+DriverSet={72CE446C-334A-4511-8020-2E9FA2EF165B}
+
+DriverVer=03/23/2017,1.1.504.0
+
+[DestinationDirs]
+DefaultDestDir   = 12
+;
+; Driver information
+;
+;************************************************************
+; Install Section
+;************************************************************
+
+[Manufacturer]
+%ManufacturerName%=Standard,NTamd64
+
+[Standard.NTamd64]
+
+;========= English/Global Devices
+%SurfaceTypeCover.DeviceDesc% = SurfaceTypeCoverNull, HID\VID_045E&PID_07DC&Col01
+%SurfaceTypeCover.DeviceDesc% = SurfaceTypeCoverNull, HID\VID_045E&PID_07DE&Col01
+%SurfaceTypeCover.DeviceDesc% = SurfaceTypeCoverNull, HID\VID_045E&PID_07E2&Col01
+%SurfaceTypeCover.DeviceDesc% = SurfaceTypeCoverNull, HID\VID_045E&PID_07E4&MI_00&Col01
+%SurfaceTypeCover.DeviceDesc% = SurfaceTypeCoverNull, HID\VID_045E&PID_07E8&Col01
+%SurfaceTypeCover.DeviceDesc% = SurfaceTypeCoverNull, HID\VID_045E&PID_09C0&Col01
+%SurfaceTypeCover.DeviceDesc% = SurfaceTypeCoverNull, HID\VID_045E&PID_09C2&MI_00&Col01
+%SurfaceTypeCover.DeviceDesc% = SurfaceTypeCoverNull, HID\VEN_MSHW&DEV_0004&SUBSYS_MSAY0003&Col01
+%SurfaceTypeCover.DeviceDesc% = SurfaceTypeCover, HID\VEN_MSHW&DEV_0004&SUBSYS_MSAY000B&Col01
+%SurfaceTypeCover.DeviceDesc% = SurfaceTypeCover, HID\VEN_MSHW&DEV_0004&SUBSYS_MSAY000D&Col01
+
+
+
+;========= Japanese Devices
+%SurfaceTypeCover.DeviceDesc% = SurfaceTypeCoverNull_109, HID\VID_045E&PID_07DD&Col01
+%SurfaceTypeCover.DeviceDesc% = SurfaceTypeCoverNull_109, HID\VID_045E&PID_07DF&Col01
+%SurfaceTypeCover.DeviceDesc% = SurfaceTypeCoverNull_109, HID\VID_045E&PID_07E3&Col01
+%SurfaceTypeCover.DeviceDesc% = SurfaceTypeCoverNull_109, HID\VID_045E&PID_07E5&MI_00&Col01
+%SurfaceTypeCover.DeviceDesc% = SurfaceTypeCoverNull_109, HID\VID_045E&PID_07E9&Col01
+%SurfaceTypeCover.DeviceDesc% = SurfaceTypeCoverNull_109, HID\VID_045E&PID_09C1&Col01
+%SurfaceTypeCover.DeviceDesc% = SurfaceTypeCoverNull_109, HID\VID_045E&PID_09C3&MI_00&Col01
+%SurfaceTypeCover.DeviceDesc% = SurfaceTypeCoverNull_109, HID\VEN_MSHW&DEV_0004&SUBSYS_MSAY0004&Col01
+%SurfaceTypeCover.DeviceDesc% = SurfaceTypeCover_109, HID\VEN_MSHW&DEV_0004&SUBSYS_MSAY000C&Col01
+%SurfaceTypeCover.DeviceDesc% = SurfaceTypeCover_109, HID\VEN_MSHW&DEV_0004&SUBSYS_MSAY000E&Col01
+
+;************************************************************
+; General installation section
+;************************************************************
+
+;========= English/Global section =========
+[SurfaceTypeCoverNull.NT]
+; perform port related actions from keyboard.inf
+Include=keyboard.inf
+Needs=HID_Keyboard_Inst.NT
+; Copy the driver over
+CopyFiles=SurfaceTypeCoverNull.CopyFiles
+
+[SurfaceTypeCover.NT]
+; perform port related actions from keyboard.inf
+Include=keyboard.inf
+Needs=HID_Keyboard_Inst.NT
+; Copy the driver over
+CopyFiles=SurfaceTypeCover.CopyFiles
+
+;========= Japanese section =========
+[SurfaceTypeCoverNull_109.NT]
+; perform port related actions from keyboard.inf
+Include = keyboard.inf
+Needs    = HID_Keyboard_Inst.NT,HID_106_Keyboard_Inst.NT
+; Copy the driver over
+CopyFiles=SurfaceTypeCoverNull.CopyFiles
+
+[SurfaceTypeCover_109.NT]
+; perform port related actions from keyboard.inf
+Include = keyboard.inf
+Needs    = HID_Keyboard_Inst.NT,HID_106_Keyboard_Inst.NT
+; Copy the driver over
+CopyFiles=SurfaceTypeCover.CopyFiles
+
+;************************************************************
+; File sections
+;************************************************************
+
+[SurfaceTypeCoverNull.CopyFiles]
+
+[SurfaceTypeCover.CopyFiles]
+SurfaceTypeCover.sys
+
+;************************************************************
+; Service Installation
+;************************************************************
+
+;========= English/Global Services section =========
+[SurfaceTypeCoverNull.NT.Services]
+; Install the port driver and mouclass from keyboard.inf
+Include=keyboard.inf
+Needs=HID_Keyboard_Inst.NT.Services
+
+[SurfaceTypeCover.NT.Services]
+AddService = SurfaceTypeCover,  , kbfilter_Service_Inst
+; Install the port driver and mouclass from keyboard.inf
+Include=keyboard.inf
+Needs=HID_Keyboard_Inst.NT.Services
+
+;========= Japanese Services section =========
+[SurfaceTypeCoverNull_109.NT.Services]
+; Install the port driver and mouclass from keyboard.inf
+Include=keyboard.inf
+Needs=HID_Keyboard_Inst.NT.Services
+
+[SurfaceTypeCover_109.NT.Services]
+AddService = SurfaceTypeCover,  , kbfilter_Service_Inst
+; Install the port driver and mouclass from keyboard.inf
+Include=keyboard.inf
+Needs=HID_Keyboard_Inst.NT.Services
+
+;========= English/Global HW section =========
+[SurfaceTypeCoverNull.NT.HW]
+; run the directives need by the port driver
+Include = keyboard.inf
+Needs    = HID_Keyboard_Inst.NT.HW
+
+[SurfaceTypeCover.NT.HW]
+; Add the device upper filter
+AddReg = SurfaceTypeCover.HW.AddReg
+; run the directives need by the port driver
+Include = keyboard.inf
+Needs    = HID_Keyboard_Inst.NT.HW
+
+;========= Japanese HW section =========
+[SurfaceTypeCoverNull_109.NT.HW]
+; run the directives need by the port driver
+Include = keyboard.inf
+Needs    = HID_106_Keyboard_Inst.NT.HW
+
+[SurfaceTypeCover_109.NT.HW]
+; Add the device upper filter
+AddReg = SurfaceTypeCover.HW.AddReg
+; run the directives need by the port driver
+Include = keyboard.inf
+Needs    = HID_106_Keyboard_Inst.NT.HW
+
+[kbfilter_Service_Inst]
+DisplayName    = %SurfaceTypeCover.SvcDesc%
+ServiceType    = 1                  ; SERVICE_KERNEL_DRIVER
+StartType      = 3                  ; SERVICE_DEMAND_START
+ErrorControl   = 0                  ; SERVICE_ERROR_IGNORE
+ServiceBinary  = %12%\SurfaceTypeCover.sys
+
+[SurfaceTypeCover.HW.AddReg]
+HKR,,"UpperFilters",0x00010000,"SurfaceTypeCover"
+
+
+;************************************************************
+; Source file information
+;************************************************************
+
+[SourceDisksNames]
+1 = %DiskId1%,,,
+
+[SourceDisksFiles]
+SurfaceTypeCover.sys = 1,,
+
+;************************************************************
+; Strings
+;************************************************************
+
+[Strings]
+;
+; Non-Localizable Strings
+;
+REG_SZ         = 0x00000000
+REG_MULTI_SZ   = 0x00010000
+REG_EXPAND_SZ  = 0x00020000
+REG_BINARY     = 0x00000001
+REG_DWORD      = 0x00010001
+SERVICEROOT    = "System\CurrentControlSet\Services"
+
+;
+; Localizable Strings
+;
+DiskId1="WDS Base Driver Installation Disk"
+SurfaceTypeCover.DeviceDesc = "Surface Type Cover Filter Device"
+SurfaceTypeCover.SvcDesc = "Surface Type Cover Filter Device Service"
+ManufacturerName="Surface"

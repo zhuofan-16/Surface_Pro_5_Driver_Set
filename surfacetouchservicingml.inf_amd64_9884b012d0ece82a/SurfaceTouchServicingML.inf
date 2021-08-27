@@ -1,0 +1,199 @@
+; File: SurfaceTouchServicingML.inf
+;
+; Description: Driver installation file for SurfaceTouchServicingML
+;
+; Copyright (C) 2015 Microsoft Corporation.  All Rights Reserved.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[Version]
+Signature   = "$WINDOWS NT$"
+Class       = System
+ClassGuid   = {4D36E97D-E325-11CE-BFC1-08002BE10318}
+Provider    = %ManufacturerName%
+DriverVer = 05/22/2018,1.16.139.0
+CatalogFile = SurfaceTouchServicingML.cat
+PnpLockdown = 1
+
+[SourceDisksNames]
+1 = %DiskName%
+
+[SourceDisksFiles]
+SurfaceTouchServicingKernelMSHW0137.bin=1
+SurfaceTouchServicingKernelMSHW0137.bin.sig=1
+SurfaceTouchServicingSFTConfigMSHW0137.bin=1
+SurfaceTouchServicingDescriptorMSHW0137.bin=1
+SurfaceTouchServicingTouchBlobMSHW0137.bin=1
+SurfaceTouchServicingKernelSKLMSHW0076.bin=1
+SurfaceTouchServicingSFTConfigMSHW0076.bin=1
+SurfaceTouchServicingDescriptorMSHW0076.bin=1
+SurfaceTouchServicingTouchBlobMSHW0076.bin=1
+SurfaceTouchServicingKernelSKLMSHW0078.bin=1
+SurfaceTouchServicingSFTConfigMSHW0078.bin=1
+SurfaceTouchServicingDescriptorMSHW0078.bin=1
+SurfaceTouchServicingTouchBlobMSHW0078.bin=1
+SurfaceTouchServicingKernelMSHW0079.bin=1
+SurfaceTouchServicingKernelMSHW0079.bin.sig=1
+SurfaceTouchServicingSFTConfigMSHW0079.bin=1
+SurfaceTouchServicingDescriptorMSHW0079.bin=1
+SurfaceTouchServicingTouchBlobMSHW0079.bin=1
+SurfaceTouchServicingKernelMSHW0101.bin=1
+SurfaceTouchServicingKernelMSHW0101.bin.sig=1
+SurfaceTouchServicingSFTConfigMSHW0101.bin=1
+SurfaceTouchServicingDescriptorMSHW0101.bin=1
+SurfaceTouchServicingTouchBlobMSHW0101.bin=1
+SurfaceTouchServicingKernelMSHW0102.bin=1
+SurfaceTouchServicingKernelMSHW0102.bin.sig=1
+SurfaceTouchServicingSFTConfigMSHW0102.bin=1
+SurfaceTouchServicingDescriptorMSHW0102.bin=1
+SurfaceTouchServicingTouchBlobMSHW0102.bin=1
+SurfaceTouchServicingKernelSKLMSHW0103.bin=1
+SurfaceTouchServicingSFTConfigMSHW0103.bin=1
+SurfaceTouchServicingDescriptorMSHW0103.bin=1
+SurfaceTouchServicingTouchBlobMSHW0103.bin=1
+
+SurfaceTouchServicingML.sys=1
+
+[DestinationDirs]
+DefaultDestDir = 17,PreciseTouch\Intel
+SurfaceTouchServicingML_Driver_CopyFiles = 12
+
+[Manufacturer]
+%ManufacturerName% = Microsoft,NTamd64
+
+[Microsoft.NTamd64]
+%SurfaceTouchServicingML.DeviceDesc% = SurfaceTouchServicingML_Install_0137, ACPI\MSHW0137
+%SurfaceTouchServicingML.DeviceDesc% = SurfaceTouchServicingML_Install_0076, ACPI\MSHW0076
+%SurfaceTouchServicingML.DeviceDesc% = SurfaceTouchServicingML_Install_0078, ACPI\MSHW0078
+%SurfaceTouchServicingML.DeviceDesc% = SurfaceTouchServicingML_Install_0079, ACPI\MSHW0079
+%SurfaceTouchServicingML.DeviceDesc% = SurfaceTouchServicingML_Install_0101, ACPI\MSHW0101
+%SurfaceTouchServicingML.DeviceDesc% = SurfaceTouchServicingML_Install_0102, ACPI\MSHW0102
+%SurfaceTouchServicingML.DeviceDesc% = SurfaceTouchServicingML_Install_0103, ACPI\MSHW0103
+
+;; --[0137]----------------------------------------------------------------------------------
+;;
+
+[SurfaceTouchServicingML_Install_0137]
+CopyFiles = SurfaceTouchServicingML_Driver_CopyFiles, SurfaceTouchServicingML_CopyFiles_0137
+
+[SurfaceTouchServicingML_CopyFiles_0137]
+SurfaceTouchServicingKernelMSHW0137.bin
+SurfaceTouchServicingKernelMSHW0137.bin.sig
+SurfaceTouchServicingSFTConfigMSHW0137.bin
+SurfaceTouchServicingDescriptorMSHW0137.bin
+SurfaceTouchServicingTouchBlobMSHW0137.bin
+
+[SurfaceTouchServicingML_Install_0137.Services]
+AddService = SurfaceTouchServicingML, 2, SurfaceTouchServicingML_Service_Inst
+
+;; --[0076]----------------------------------------------------------------------------------
+;;
+
+[SurfaceTouchServicingML_Install_0076]
+CopyFiles = SurfaceTouchServicingML_Driver_CopyFiles, SurfaceTouchServicingML_CopyFiles_0076
+
+[SurfaceTouchServicingML_CopyFiles_0076]
+SurfaceTouchServicingKernelSKLMSHW0076.bin
+SurfaceTouchServicingSFTConfigMSHW0076.bin
+SurfaceTouchServicingDescriptorMSHW0076.bin
+SurfaceTouchServicingTouchBlobMSHW0076.bin
+
+[SurfaceTouchServicingML_Install_0076.Services]
+AddService = SurfaceTouchServicingML, 2, SurfaceTouchServicingML_Service_Inst
+
+;; --[0078]----------------------------------------------------------------------------------
+;;
+
+[SurfaceTouchServicingML_Install_0078]
+CopyFiles = SurfaceTouchServicingML_Driver_CopyFiles, SurfaceTouchServicingML_CopyFiles_0078
+
+[SurfaceTouchServicingML_CopyFiles_0078]
+SurfaceTouchServicingKernelSKLMSHW0078.bin
+SurfaceTouchServicingSFTConfigMSHW0078.bin
+SurfaceTouchServicingDescriptorMSHW0078.bin
+SurfaceTouchServicingTouchBlobMSHW0078.bin
+
+[SurfaceTouchServicingML_Install_0078.Services]
+AddService = SurfaceTouchServicingML, 2, SurfaceTouchServicingML_Service_Inst
+
+;; --[0079]----------------------------------------------------------------------------------
+;;
+
+[SurfaceTouchServicingML_Install_0079]
+CopyFiles = SurfaceTouchServicingML_Driver_CopyFiles, SurfaceTouchServicingML_CopyFiles_0079
+
+[SurfaceTouchServicingML_CopyFiles_0079]
+SurfaceTouchServicingKernelMSHW0079.bin
+SurfaceTouchServicingKernelMSHW0079.bin.sig
+SurfaceTouchServicingSFTConfigMSHW0079.bin
+SurfaceTouchServicingDescriptorMSHW0079.bin
+SurfaceTouchServicingTouchBlobMSHW0079.bin
+
+[SurfaceTouchServicingML_Install_0079.Services]
+AddService = SurfaceTouchServicingML, 2, SurfaceTouchServicingML_Service_Inst
+
+;; --[0101]----------------------------------------------------------------------------------
+;;
+
+[SurfaceTouchServicingML_Install_0101]
+CopyFiles = SurfaceTouchServicingML_Driver_CopyFiles, SurfaceTouchServicingML_CopyFiles_0101
+
+[SurfaceTouchServicingML_CopyFiles_0101]
+SurfaceTouchServicingKernelMSHW0101.bin
+SurfaceTouchServicingKernelMSHW0101.bin.sig
+SurfaceTouchServicingSFTConfigMSHW0101.bin
+SurfaceTouchServicingDescriptorMSHW0101.bin
+SurfaceTouchServicingTouchBlobMSHW0101.bin
+
+[SurfaceTouchServicingML_Install_0101.Services]
+AddService = SurfaceTouchServicingML, 2, SurfaceTouchServicingML_Service_Inst
+
+;; --[0102]----------------------------------------------------------------------------------
+;;
+
+[SurfaceTouchServicingML_Install_0102]
+CopyFiles = SurfaceTouchServicingML_Driver_CopyFiles, SurfaceTouchServicingML_CopyFiles_0102
+
+[SurfaceTouchServicingML_CopyFiles_0102]
+SurfaceTouchServicingKernelMSHW0102.bin
+SurfaceTouchServicingKernelMSHW0102.bin.sig
+SurfaceTouchServicingSFTConfigMSHW0102.bin
+SurfaceTouchServicingDescriptorMSHW0102.bin
+SurfaceTouchServicingTouchBlobMSHW0102.bin
+
+[SurfaceTouchServicingML_Install_0102.Services]
+AddService = SurfaceTouchServicingML, 2, SurfaceTouchServicingML_Service_Inst
+
+;; --[0103]----------------------------------------------------------------------------------
+;;
+
+[SurfaceTouchServicingML_Install_0103]
+CopyFiles = SurfaceTouchServicingML_Driver_CopyFiles, SurfaceTouchServicingML_CopyFiles_0103
+
+[SurfaceTouchServicingML_CopyFiles_0103]
+SurfaceTouchServicingKernelSKLMSHW0103.bin
+SurfaceTouchServicingSFTConfigMSHW0103.bin
+SurfaceTouchServicingDescriptorMSHW0103.bin
+SurfaceTouchServicingTouchBlobMSHW0103.bin
+
+[SurfaceTouchServicingML_Install_0103.Services]
+AddService = SurfaceTouchServicingML, 2, SurfaceTouchServicingML_Service_Inst
+
+;; --[Common]---------------------------------------------------------------------------------
+;;
+
+[SurfaceTouchServicingML_Driver_CopyFiles]
+SurfaceTouchServicingML.sys
+
+[SurfaceTouchServicingML_Service_Inst]
+DisplayName    = %SurfaceTouchServicingML.DeviceDesc%
+ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
+StartType      = 3               ; SERVICE_DEMAND_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %12%\SurfaceTouchServicingML.sys
+
+[Strings]
+; localizable strings
+ManufacturerName                   = "Surface"
+SurfaceTouchServicingML.DeviceDesc = "Surface Touch Servicing ML"
+DiskName                           = "Surface Touch Servicing ML Driver Installation Disk"
+

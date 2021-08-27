@@ -1,0 +1,58 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; 
+; File:             SurfaceSystemTelemetryDriver.inf
+;
+; Description:      Surface System Telemetry Driver
+;                   
+;
+;         Copyright (C) Microsoft Corporation.  All Rights Reserved.
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+[Version]
+Signature="$WINDOWS NT$"
+Class=System
+ClassGuid={4D36E97D-E325-11CE-BFC1-08002BE10318}
+Provider=%ManufacturerName%
+CatalogFile=SurfaceSystemTelemetryDriver.cat
+DriverVer=02/15/2019,4.0.0.0
+PnpLockdown=1
+
+[DestinationDirs]
+DefaultDestDir = 12
+
+; ================= Class section =====================
+
+[SourceDisksNames]
+1 = %DiskName%,,,""
+
+[SourceDisksFiles]
+; Empty
+
+;*****************************************
+; Install Section
+;*****************************************
+
+[Manufacturer]
+%ManufacturerName%=Standard,NTamd64
+
+[Standard.NTamd64]
+%SurfaceSystemTelemetryDriver.DeviceDesc%=SurfaceSystemTelemetryDriver_Device, ACPI\MSHW0045
+
+[SurfaceSystemTelemetryDriver_Device.NT]
+CopyFiles=EmptyCopy
+
+[EmptyCopy]
+; No files to copy.
+
+;-------------- Service installation
+[SurfaceSystemTelemetryDriver_Device.NT.Services]
+;
+; %SPSVCINST_ASSOCSERVICE% should only be specificed if this is a function driver.
+;
+AddService=,%SPSVCINST_ASSOCSERVICE%                 ; NULL function driver
+
+[Strings]
+SPSVCINST_ASSOCSERVICE= 0x00000002
+ManufacturerName="Surface"
+DiskName = "Surface System Telemetry Driver Installation Disk"
+SurfaceSystemTelemetryDriver.DeviceDesc = "Surface System Telemetry"

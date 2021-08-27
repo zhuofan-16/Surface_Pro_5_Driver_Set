@@ -1,0 +1,99 @@
+;
+; SurfacePro1725TypeCoverIntegration.inf
+;
+; Copyright (c) Microsoft Corporation. All rights reserved
+;
+
+[Version]
+Signature="$Windows NT$"
+ClassGuid={745a17a0-74d3-11d0-b6fe-00a0c90f57da}
+Class=HIDClass
+Provider=%ManufacturerName%
+CatalogFile=SurfacePro1725TypeCoverIntegration.cat
+DriverSet={6B443C6D-A605-4BA3-A3B9-06C940D8A5D5}
+PnPLockDown=1
+
+DriverVer=03/22/2017,1.0.2.0
+
+[DestinationDirs]
+DefaultDestDir   = 12
+;
+; Driver information
+;
+;************************************************************
+; Install Section
+;************************************************************
+
+[Manufacturer]
+%ManufacturerName%=Standard,NTamd64
+
+[Standard.NTamd64]
+%SurfacePro1725TypeCoverIntegration.DeviceDesc% = SurfacePro1725TypeCoverIntegration, HID\VID_045E&PID_09C2&MI_00&Col04
+%SurfacePro1725TypeCoverIntegration.DeviceDesc% = SurfacePro1725TypeCoverIntegration, HID\VID_045E&PID_09C0&Col04
+%SurfacePro1725TypeCoverIntegration.DeviceDesc% = SurfacePro1725TypeCoverIntegration, HID\VID_045E&PID_09C3&MI_00&Col04
+%SurfacePro1725TypeCoverIntegration.DeviceDesc% = SurfacePro1725TypeCoverIntegration, HID\VID_045E&PID_09C1&Col04
+
+
+;************************************************************
+; General installation section
+;************************************************************
+[SurfacePro1725TypeCoverIntegration.NT]
+CopyFiles=SurfacePro1725TypeCoverIntegration.CopyFiles
+
+
+;************************************************************
+; File sections
+;************************************************************
+[SurfacePro1725TypeCoverIntegration.CopyFiles]
+SurfacePro1725TypeCoverIntegration.sys
+
+;************************************************************
+; Service Installation
+;************************************************************
+[SurfacePro1725TypeCoverIntegration.NT.Services]
+AddService = SurfacePro1725TypeCoverIntegration, 0x000001f8, SurfacePro1725TypeCoverIntegration_Service_Inst
+AddService = ,%SPSVCINST_ASSOCSERVICE% ; null service install
+
+[SurfacePro1725TypeCoverIntegration.NT.HW]
+; Add as device upper filter
+AddReg = SurfacePro1725TypeCoverIntegration.HW.AddReg
+
+[SurfacePro1725TypeCoverIntegration_Service_Inst]
+DisplayName    = %SurfacePro1725TypeCoverIntegration.SvcDesc%
+ServiceType    = 1                  ; SERVICE_KERNEL_DRIVER
+StartType      = 3                  ; SERVICE_DEMAND_START
+ErrorControl   = 0                  ; SERVICE_ERROR_IGNORE
+ServiceBinary  = %12%\SurfacePro1725TypeCoverIntegration.sys
+
+[SurfacePro1725TypeCoverIntegration.HW.AddReg]
+HKR,,"UpperFilters",0x00010008,"SurfacePro1725TypeCoverIntegration"
+
+
+;************************************************************
+; Source file information
+;************************************************************
+
+[SourceDisksNames]
+1 = %DiskId1%,,,
+
+[SourceDisksFiles]
+SurfacePro1725TypeCoverIntegration.sys = 1,,
+
+;************************************************************
+; Strings
+;************************************************************
+
+[Strings]
+;
+; Non-Localizable Strings
+;
+SERVICEROOT    = "System\CurrentControlSet\Services"
+SPSVCINST_ASSOCSERVICE= 0x00000002
+
+;
+; Localizable Strings
+;
+DiskId1="SurfacePro1725TypeCoverIntegration Installation Disk"
+SurfacePro1725TypeCoverIntegration.DeviceDesc = "Surface Pro Type Cover Integration"
+SurfacePro1725TypeCoverIntegration.SvcDesc = "Surface Pro 1725 Type Cover Integration Service"
+ManufacturerName="Surface"
